@@ -1,0 +1,1153 @@
+/* ============================================================
+   GRACIA EDUCATION HUB
+   LOGIN PAGE
+   BACKEND-READY AUTHENTICATION
+   SINGLE CENTERED SCREEN
+============================================================ */
+
+.gracia-login {
+  min-height: 100vh;
+
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  padding: 30px 20px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #061b4f 0%,
+      #082b72 45%,
+      #0b3c8f 100%
+    );
+
+  color: #ffffff;
+
+  background-image:
+    linear-gradient(
+      135deg,
+      #061b4f 0%,
+      #082b72 45%,
+      #0b3c8f 100%
+    ),
+    linear-gradient(
+      rgba(255, 255, 255, 0.04) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.04) 1px,
+      transparent 1px
+    );
+
+  background-size:
+    auto,
+    55px 55px,
+    55px 55px;
+}
+
+/* ============================================================
+   BACKGROUND DECORATION
+============================================================ */
+
+.gracia-login::before {
+  content: "";
+
+  position: absolute;
+
+  width: 550px;
+  height: 550px;
+
+  top: -300px;
+  left: -150px;
+
+  border-radius: 50%;
+
+  background: rgba(255, 193, 7, 0.18);
+
+  filter: blur(5px);
+
+  pointer-events: none;
+}
+
+.gracia-login::after {
+  content: "";
+
+  position: absolute;
+
+  width: 650px;
+  height: 650px;
+
+  right: -300px;
+  bottom: -380px;
+
+  border-radius: 50%;
+
+  background: rgba(61, 132, 255, 0.25);
+
+  filter: blur(5px);
+
+  pointer-events: none;
+}
+
+/* ============================================================
+   REMOVE OLD SPLIT-SCREEN
+============================================================ */
+
+.gracia-login-visual {
+  display: none !important;
+}
+
+.visual-decoration {
+  display: none;
+}
+
+/* ============================================================
+   LOGIN AREA
+============================================================ */
+
+.gracia-login-area {
+  position: relative;
+
+  z-index: 5;
+
+  width: 100%;
+}
+
+/* ============================================================
+   LOGIN CONTAINER
+============================================================ */
+
+.login-container {
+  width: 100%;
+
+  max-width: 430px;
+
+  margin: 0 auto;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+}
+
+/* ============================================================
+   BRAND
+============================================================ */
+
+.mobile-login-brand {
+  display: block;
+
+  margin-bottom: 18px;
+}
+
+.gracia-login-logo {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 14px;
+
+  color: #ffffff;
+
+  text-decoration: none;
+
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.gracia-login-logo:hover {
+  transform: translateY(-1px);
+
+  opacity: 0.96;
+}
+
+/* ============================================================
+   REAL LOGO WRAPPER
+============================================================ */
+
+.logo-image-wrapper {
+  width: 72px;
+  height: 72px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  padding: 4px;
+
+  box-sizing: border-box;
+
+  border-radius: 17px;
+
+  background: rgba(255, 255, 255, 0.98);
+
+  border: 2px solid rgba(255, 255, 255, 0.95);
+
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.24),
+    0 0 0 5px rgba(255, 255, 255, 0.06);
+}
+
+/* ============================================================
+   REAL LOGO
+============================================================ */
+
+.gracia-logo-image {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: contain;
+
+  border-radius: 12px;
+}
+
+/* ============================================================
+   LOGO TEXT
+============================================================ */
+
+.gracia-logo-text {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 5px;
+}
+
+.gracia-logo-text strong {
+  color: #ffffff;
+
+  font-size: 24px;
+
+  font-weight: 900;
+
+  letter-spacing: 2.2px;
+
+  line-height: 1;
+}
+
+.gracia-logo-text span {
+  color: rgba(255, 255, 255, 0.72);
+
+  font-size: 9px;
+
+  font-weight: 800;
+
+  letter-spacing: 1.8px;
+
+  line-height: 1.1;
+}
+
+/* ============================================================
+   LOGIN CARD
+============================================================ */
+
+.login-card {
+  width: 100%;
+
+  max-width: 410px;
+
+  padding: 29px 32px;
+
+  border-radius: 21px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.99),
+      rgba(247, 249, 252, 0.98)
+    );
+
+  border: 1px solid rgba(255, 255, 255, 0.8);
+
+  box-shadow:
+    0 25px 65px rgba(0, 0, 0, 0.26);
+
+  color: #101828;
+
+  box-sizing: border-box;
+}
+
+/* ============================================================
+   LOGIN HEADER
+============================================================ */
+
+.login-header {
+  text-align: center;
+
+  margin-bottom: 20px;
+}
+
+.login-eyebrow {
+  display: inline-block;
+
+  margin-bottom: 7px;
+
+  color: #0b4aa2;
+
+  font-size: 9px;
+
+  font-weight: 900;
+
+  letter-spacing: 1.5px;
+}
+
+.login-header h2 {
+  margin: 0;
+
+  color: #101828;
+
+  font-size: 29px;
+
+  line-height: 1.15;
+
+  font-weight: 900;
+
+  letter-spacing: -0.6px;
+}
+
+.login-header p {
+  margin: 7px 0 0;
+
+  color: #667085;
+
+  font-size: 13px;
+
+  line-height: 1.5;
+
+  font-weight: 600;
+}
+
+/* ============================================================
+   SUCCESS MESSAGE
+============================================================ */
+
+.login-success {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  margin-bottom: 13px;
+
+  padding: 10px 12px;
+
+  border-radius: 9px;
+
+  background: #ecfdf3;
+
+  border: 1px solid #abefc6;
+
+  color: #067647;
+
+  font-size: 12px;
+
+  line-height: 1.4;
+
+  font-weight: 700;
+
+  text-align: center;
+}
+
+.login-success svg {
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   ERROR
+============================================================ */
+
+.login-error {
+  margin-bottom: 13px;
+
+  padding: 10px 12px;
+
+  border-radius: 9px;
+
+  background: #fff1f1;
+
+  border: 1px solid #fecdca;
+
+  color: #b42318;
+
+  font-size: 12px;
+
+  line-height: 1.4;
+
+  font-weight: 700;
+
+  text-align: center;
+}
+
+/* ============================================================
+   FORM
+============================================================ */
+
+.gracia-login-form {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 15px;
+}
+
+/* ============================================================
+   FIELD
+============================================================ */
+
+.login-field {
+  width: 100%;
+}
+
+.login-field > label,
+.password-heading label {
+  display: block;
+
+  margin-bottom: 6px;
+
+  color: #344054;
+
+  font-size: 12px;
+
+  font-weight: 800;
+}
+
+/* ============================================================
+   PASSWORD HEADING
+============================================================ */
+
+.password-heading {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  margin-bottom: 6px;
+}
+
+.password-heading label {
+  margin-bottom: 0;
+}
+
+.password-heading a {
+  color: #0b4aa2;
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+  text-decoration: none;
+}
+
+.password-heading a:hover {
+  color: #061b4f;
+
+  text-decoration: underline;
+}
+
+.password-heading .disabled-link {
+  pointer-events: none;
+
+  opacity: 0.5;
+}
+
+/* ============================================================
+   INPUT
+============================================================ */
+
+.login-input {
+  position: relative;
+
+  display: flex;
+
+  align-items: center;
+
+  width: 100%;
+
+  min-height: 47px;
+
+  border: 1px solid #d0d5dd;
+
+  border-radius: 9px;
+
+  background: #ffffff;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+
+  box-sizing: border-box;
+}
+
+.login-input:focus-within {
+  border-color: #0b4aa2;
+
+  box-shadow:
+    0 0 0 3px rgba(11, 74, 162, 0.1);
+}
+
+.login-input:has(input:disabled) {
+  background: #f8fafc;
+
+  cursor: not-allowed;
+}
+
+/* ============================================================
+   INPUT ICON
+============================================================ */
+
+.input-icon {
+  width: 43px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  color: #98a2b3;
+
+  pointer-events: none;
+}
+
+.login-input:focus-within .input-icon {
+  color: #0b4aa2;
+}
+
+/* ============================================================
+   INPUT FIELD
+============================================================ */
+
+.login-input input {
+  flex: 1;
+
+  width: 100%;
+
+  height: 45px;
+
+  min-width: 0;
+
+  padding: 0 10px 0 0;
+
+  border: none;
+
+  outline: none;
+
+  background: transparent;
+
+  color: #101828;
+
+  font-family: inherit;
+
+  font-size: 13px;
+
+  font-weight: 600;
+}
+
+.login-input input::placeholder {
+  color: #98a2b3;
+
+  font-weight: 500;
+}
+
+.login-input input:disabled {
+  cursor: not-allowed;
+
+  color: #98a2b3;
+}
+
+/* ============================================================
+   PASSWORD BUTTON
+============================================================ */
+
+.password-button {
+  width: 43px;
+  height: 45px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border: none;
+
+  background: transparent;
+
+  color: #98a2b3;
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.password-button:hover {
+  color: #0b4aa2;
+}
+
+.password-button:disabled {
+  opacity: 0.5;
+
+  cursor: not-allowed;
+}
+
+/* ============================================================
+   REMEMBER ME
+============================================================ */
+
+.remember-option {
+  position: relative;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  color: #475467;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  user-select: none;
+}
+
+.remember-option input {
+  position: absolute;
+
+  opacity: 0;
+
+  pointer-events: none;
+}
+
+.custom-checkbox {
+  width: 17px;
+  height: 17px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border: 1px solid #d0d5dd;
+
+  border-radius: 4px;
+
+  background: #ffffff;
+
+  color: transparent;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.remember-option input:checked
++ .custom-checkbox {
+  border-color: #ffc928;
+
+  background: #ffc928;
+
+  color: #061b4f;
+}
+
+.remember-option input:disabled
++ .custom-checkbox {
+  opacity: 0.6;
+
+  cursor: not-allowed;
+}
+
+/* ============================================================
+   SUBMIT BUTTON
+============================================================ */
+
+.login-submit {
+  width: 100%;
+
+  min-height: 47px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 8px;
+
+  margin-top: 1px;
+
+  border: none;
+
+  border-radius: 9px;
+
+  background: #ffc928;
+
+  color: #061b4f;
+
+  font-family: inherit;
+
+  font-size: 13px;
+
+  font-weight: 900;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 8px 24px rgba(16, 24, 40, 0.12);
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.login-submit:hover:not(:disabled) {
+  transform: translateY(-2px);
+
+  background: #ffd84f;
+
+  box-shadow:
+    0 12px 28px rgba(16, 24, 40, 0.18);
+}
+
+.login-submit:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.login-submit:disabled {
+  opacity: 0.72;
+
+  cursor: not-allowed;
+
+  transform: none;
+
+  box-shadow:
+    0 5px 15px rgba(16, 24, 40, 0.08);
+}
+
+/* ============================================================
+   LOADING SPINNER
+============================================================ */
+
+.login-spinner {
+  animation:
+    login-spin 0.8s linear infinite;
+}
+
+@keyframes login-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ============================================================
+   CREATE ACCOUNT
+============================================================ */
+
+.create-account {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  flex-wrap: wrap;
+
+  gap: 5px;
+
+  margin-top: 17px;
+
+  padding-top: 15px;
+
+  border-top: 1px solid #e4e7ec;
+
+  color: #667085;
+
+  font-size: 12px;
+
+  font-weight: 600;
+}
+
+.create-account a {
+  color: #0b4aa2;
+
+  font-weight: 900;
+
+  text-decoration: none;
+}
+
+.create-account a:hover {
+  color: #061b4f;
+
+  text-decoration: underline;
+}
+
+/* ============================================================
+   COPYRIGHT
+============================================================ */
+
+.login-copyright {
+  margin: 11px 0 0;
+
+  color: rgba(255, 255, 255, 0.58);
+
+  font-size: 10px;
+
+  font-weight: 600;
+
+  text-align: center;
+}
+
+/* ============================================================
+   LARGE SCREENS
+============================================================ */
+
+@media (min-width: 1000px) {
+  .gracia-login {
+    padding: 20px;
+  }
+
+  .login-container {
+    max-width: 400px;
+  }
+
+  .login-card {
+    max-width: 400px;
+
+    padding: 27px 29px;
+  }
+}
+
+/* ============================================================
+   TABLETS
+============================================================ */
+
+@media (max-width: 700px) {
+  .gracia-login {
+    padding: 24px 16px;
+  }
+
+  .login-container {
+    max-width: 400px;
+  }
+
+  .mobile-login-brand {
+    margin-bottom: 17px;
+  }
+
+  .login-card {
+    padding: 27px 26px;
+
+    border-radius: 19px;
+  }
+}
+
+/* ============================================================
+   MOBILE
+============================================================ */
+
+@media (max-width: 600px) {
+  .gracia-login {
+    padding: 22px 14px;
+  }
+
+  .mobile-login-brand {
+    margin-bottom: 16px;
+  }
+
+  .logo-image-wrapper {
+    width: 62px;
+    height: 62px;
+
+    border-radius: 15px;
+  }
+
+  .gracia-logo-image {
+    border-radius: 11px;
+  }
+
+  .gracia-login-logo {
+    gap: 12px;
+  }
+
+  .gracia-logo-text {
+    gap: 4px;
+  }
+
+  .gracia-logo-text strong {
+    font-size: 21px;
+  }
+
+  .gracia-logo-text span {
+    font-size: 8px;
+
+    letter-spacing: 1.5px;
+  }
+
+  .login-card {
+    padding: 25px 21px;
+
+    border-radius: 18px;
+  }
+
+  .login-header {
+    margin-bottom: 19px;
+  }
+
+  .login-header h2 {
+    font-size: 26px;
+  }
+
+  .login-header p {
+    font-size: 12px;
+  }
+
+  .gracia-login-form {
+    gap: 14px;
+  }
+}
+
+/* ============================================================
+   SMALL MOBILE
+============================================================ */
+
+@media (max-width: 400px) {
+  .gracia-login {
+    padding: 18px 11px;
+  }
+
+  .mobile-login-brand {
+    margin-bottom: 13px;
+  }
+
+  .logo-image-wrapper {
+    width: 55px;
+    height: 55px;
+
+    border-radius: 14px;
+  }
+
+  .gracia-login-logo {
+    gap: 10px;
+  }
+
+  .gracia-logo-text {
+    gap: 4px;
+  }
+
+  .gracia-logo-text strong {
+    font-size: 18px;
+
+    letter-spacing: 1.8px;
+  }
+
+  .gracia-logo-text span {
+    font-size: 7px;
+
+    letter-spacing: 1.2px;
+  }
+
+  .login-card {
+    padding: 22px 17px;
+
+    border-radius: 16px;
+  }
+
+  .login-header h2 {
+    font-size: 24px;
+  }
+
+  .login-header p {
+    font-size: 11px;
+  }
+
+  .login-input {
+    min-height: 45px;
+  }
+
+  .login-input input {
+    height: 43px;
+
+    font-size: 12px;
+  }
+
+  .password-button {
+    height: 43px;
+
+    width: 41px;
+  }
+
+  .input-icon {
+    width: 41px;
+  }
+
+  .login-submit {
+    min-height: 45px;
+  }
+
+  .create-account {
+    margin-top: 16px;
+
+    padding-top: 14px;
+
+    font-size: 11px;
+  }
+}
+
+/* ============================================================
+   SHORT LAPTOP SCREENS
+============================================================ */
+
+@media (max-height: 800px) and (min-width: 601px) {
+  .gracia-login {
+    padding-top: 16px;
+
+    padding-bottom: 16px;
+  }
+
+  .mobile-login-brand {
+    margin-bottom: 10px;
+  }
+
+  .logo-image-wrapper {
+    width: 58px;
+    height: 58px;
+
+    border-radius: 14px;
+  }
+
+  .gracia-login-logo {
+    gap: 11px;
+  }
+
+  .gracia-logo-text {
+    gap: 4px;
+  }
+
+  .gracia-logo-text strong {
+    font-size: 20px;
+  }
+
+  .gracia-logo-text span {
+    font-size: 7px;
+  }
+
+  .login-card {
+    padding: 22px 29px;
+
+    border-radius: 18px;
+  }
+
+  .login-header {
+    margin-bottom: 14px;
+  }
+
+  .login-eyebrow {
+    margin-bottom: 5px;
+  }
+
+  .login-header h2 {
+    font-size: 25px;
+  }
+
+  .login-header p {
+    margin-top: 4px;
+
+    font-size: 11px;
+  }
+
+  .gracia-login-form {
+    gap: 9px;
+  }
+
+  .login-field > label,
+  .password-heading label {
+    margin-bottom: 4px;
+
+    font-size: 11px;
+  }
+
+  .login-input {
+    min-height: 41px;
+  }
+
+  .login-input input {
+    height: 39px;
+
+    font-size: 12px;
+  }
+
+  .password-button {
+    height: 39px;
+  }
+
+  .login-success,
+  .login-error {
+    margin-bottom: 9px;
+
+    padding: 7px 9px;
+
+    font-size: 10px;
+  }
+
+  .remember-option {
+    font-size: 10px;
+  }
+
+  .custom-checkbox {
+    width: 16px;
+
+    height: 16px;
+  }
+
+  .login-submit {
+    min-height: 42px;
+
+    font-size: 12px;
+  }
+
+  .create-account {
+    margin-top: 10px;
+
+    padding-top: 9px;
+
+    font-size: 10px;
+  }
+
+  .login-copyright {
+    margin-top: 6px;
+
+    font-size: 9px;
+  }
+}
