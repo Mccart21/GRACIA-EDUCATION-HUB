@@ -1,0 +1,66 @@
+export enum EducationLevel {
+  PRIMARY = 'PRIMARY',
+  SECONDARY = 'SECONDARY',
+  TERTIARY = 'TERTIARY',
+  PROFESSIONAL = 'PROFESSIONAL',
+  PRACTICAL_SKILLS = 'PRACTICAL_SKILLS',
+}
+
+export enum UserRole {
+  STUDENT = 'STUDENT',
+  TEACHER = 'TEACHER',
+  TUTOR = 'TUTOR',
+  ADMIN = 'ADMIN',
+}
+
+export enum ServiceCategory {
+  ACADEMIC = 'ACADEMIC',
+  DIGITAL_SKILLS = 'DIGITAL_SKILLS',
+  CAREER_SUPPORT = 'CAREER_SUPPORT',
+  AGRICULTURE = 'AGRICULTURE',
+  MANUFACTURING = 'MANUFACTURING',
+  DESIGN = 'DESIGN',
+  BUSINESS = 'BUSINESS',
+  MONITORING_EVALUATION = 'MONITORING_EVALUATION',
+  NUTRITION = 'NUTRITION',
+  OTHER = 'OTHER',
+}
+
+export enum EnrollmentStatus {
+  ACTIVE = 'ACTIVE',
+  COMPLETED = 'COMPLETED',
+  CANCELLED = 'CANCELLED',
+}
+
+export enum SubscriptionPlan {
+  DAY = 'DAY',
+  WEEK = 'WEEK',
+  MONTH = 'MONTH',
+}
+
+export enum PaymentMethod {
+  AIRTEL_MONEY = 'AIRTEL_MONEY',
+  TNM_MPAMBA = 'TNM_MPAMBA',
+  BANK = 'BANK',
+  OTHER = 'OTHER',
+}
+
+export enum PaymentStatus {
+  PENDING = 'PENDING',
+  SUCCESSFUL = 'SUCCESSFUL',
+  FAILED = 'FAILED',
+}
+
+export enum ContactStatus {
+  NEW = 'NEW',
+  READ = 'READ',
+  REPLIED = 'REPLIED',
+  CLOSED = 'CLOSED',
+}
+
+export enum FeedbackType {
+  COURSE = 'COURSE',
+  SUBJECT = 'SUBJECT',
+  PLATFORM = 'PLATFORM',
+  GENERAL = 'GENERAL',
+}
