@@ -1,33 +1,33 @@
+
 import {
-  IsEnum,
-  IsNumber,
+  IsIn,
+  IsNotEmpty,
   IsOptional,
   IsString,
+  MaxLength,
 } from 'class-validator';
-
-import { EducationLevel } from '../../common/enums';
 
 export class CreateSubjectDto {
   @IsString()
-  name: string;
+  @IsNotEmpty()
+  @MaxLength(150)
+  name!: string;
 
   @IsString()
-  code: string;
+  @IsNotEmpty()
+  @MaxLength(50)
+  code!: string;
 
+  @IsString()
   @IsOptional()
-  @IsString()
   description?: string;
 
-  @IsEnum(EducationLevel)
-  level: EducationLevel;
-
-  @IsNumber()
-  courseId: number;
-
-  @IsOptional()
   @IsString()
-  image?: string;
+  @IsIn(['primary', 'secondary'])
+  level!: string;
 
+  @IsString()
   @IsOptional()
-  isActive?: boolean;
+  @IsIn(['active', 'inactive'])
+  status?: string;
 }

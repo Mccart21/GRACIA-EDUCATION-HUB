@@ -1,43 +1,45 @@
+
 import {
-  Body,
   Controller,
   Get,
+  Post,
+  Body,
   Param,
   ParseIntPipe,
-  Patch,
-  Post,
+  Req,
+  UseGuards,
 } from '@nestjs/common';
 
 import { PaymentsService } from './payments.service';
 import { CreatePaymentDto } from './dto/create-payment.dto';
-import { UpdatePaymentDto } from './dto/update-payment.dto';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @Controller('payments')
+@UseGuards(JwtAuthGuard)
 export class PaymentsController {
-  constructor(
-    private readonly paymentsService: PaymentsService,
-  ) {}
+  constructor(private readonly paymentsService: PaymentsService) {}
 
   @Post()
-  create(@Body() dto: CreatePaymentDto) {
-    return this.paymentsService.create(dto);
+  create(
+    @Req() req: { user: { id: number | string } },
+    @Body() createPaymentDto: CreatePaymentDto,
+  ) {
+    return this.paymentsService.create(
+      Number(req.user.id),
+      createPaymentDto,
+    );
   }
 
-  @Get()
-  findAll() {
-    return this.paymentsService.findAll();
+  @Get('my')
+  findMyPayments(@Req() req: { user: { id: number | string } }) {
+    return this.paymentsService.findAllForUser(Number(req.user.id));
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.paymentsService.findOne(id);
-  }
-
-  @Patch(':id')
-  update(
+  findOne(
+    @Req() req: { user: { id: number | string } },
     @Param('id', ParseIntPipe) id: number,
-    @Body() dto: UpdatePaymentDto,
   ) {
-    return this.paymentsService.update(id, dto);
+    return this.paymentsService.findOneForUser(Number(req.user.id), id);
   }
 }

@@ -1,78 +1,105 @@
+
 import {
   Column,
   CreateDateColumn,
   Entity,
-  ManyToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
-
-import {
-  PaymentMethod,
-  PaymentStatus,
-} from '../../common/enums';
-
-import { User } from '../../users/entities/user.entity';
-import { Subscription } from '../../subscriptions/entities/subscription.entity';
 
 @Entity('payments')
 export class Payment {
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @Column()
-  userId: number;
-
-  @Column()
-  subscriptionId: number;
-
-  @Column({
-    type: 'decimal',
-    precision: 12,
-    scale: 2,
+  @PrimaryGeneratedColumn({
+    name: 'id',
+    type: 'number',
   })
-  amount: number;
+  id!: number;
 
   @Column({
+    name: 'userId',
+    type: 'number',
+  })
+  userId!: number;
+
+  @Column({
+    name: 'subscriptionId',
+    type: 'number',
+  })
+  subscriptionId!: number;
+
+  @Column({
+    name: 'planId',
+    type: 'number',
+  })
+  planId!: number;
+
+  @Column({
+    name: 'courseId',
+    type: 'number',
+    nullable: true,
+  })
+  courseId!: number | null;
+
+  @Column({
+    name: 'subjectId',
+    type: 'number',
+    nullable: true,
+  })
+  subjectId!: number | null;
+
+  @Column({
+    name: 'amount',
+    type: 'number',
+  })
+  amount!: number;
+
+  @Column({
+    name: 'currency',
+    type: 'varchar2',
     length: 10,
     default: 'MWK',
   })
-  currency: string;
+  currency!: string;
 
   @Column({
+    name: 'paymentMethod',
+    type: 'varchar2',
+    length: 50,
+  })
+  paymentMethod!: string;
+
+  @Column({
+    name: 'provider',
+    type: 'varchar2',
+    length: 50,
+  })
+  provider!: string;
+
+  @Column({
+    name: 'transactionReference',
+    type: 'varchar2',
+    length: 150,
+    nullable: true,
+  })
+  transactionReference!: string | null;
+
+  @Column({
+    name: 'status',
     type: 'varchar2',
     length: 30,
+    default: 'pending',
   })
-  method: PaymentMethod;
+  status!: string;
 
-  @Column({ nullable: true, length: 30 })
-  phone?: string;
-
-  @Column({
-    type: 'varchar2',
-    length: 20,
-    default: PaymentStatus.PENDING,
+  @CreateDateColumn({
+    name: 'createdAt',
+    type: 'timestamp',
   })
-  status: PaymentStatus;
+  createdAt!: Date;
 
-  @Column({
-    unique: true,
-    nullable: true,
-    length: 150,
+  @UpdateDateColumn({
+    name: 'updatedAt',
+    type: 'timestamp',
   })
-  reference?: string;
-
-  @ManyToOne(
-    () => User,
-    user => user.payments,
-  )
-  user: User;
-
-  @ManyToOne(
-    () => Subscription,
-    subscription => subscription.payments,
-  )
-  subscription: Subscription;
-
-  @CreateDateColumn()
-  createdAt: Date;
+  updatedAt!: Date;
 }

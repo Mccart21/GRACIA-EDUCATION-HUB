@@ -1,32 +1,32 @@
+
+import { Type } from 'class-transformer';
 import {
-  IsEnum,
-  IsNumber,
+  IsInt,
+  IsNotEmpty,
   IsOptional,
   IsString,
   Min,
 } from 'class-validator';
 
-import { PaymentMethod } from '../../common/enums';
-
 export class CreatePaymentDto {
-  @IsNumber()
-  userId: number;
+  @Type(() => Number)
+  @IsInt()
+  @Min(1)
+  planId!: number;
 
-  @IsNumber()
-  subscriptionId: number;
-
-  @IsNumber()
-  @Min(0)
-  amount: number;
+  @IsString()
+  @IsNotEmpty()
+  provider!: string;
 
   @IsOptional()
-  @IsString()
-  currency?: string;
-
-  @IsEnum(PaymentMethod)
-  method: PaymentMethod;
+  @Type(() => Number)
+  @IsInt()
+  @Min(1)
+  courseId?: number;
 
   @IsOptional()
-  @IsString()
-  phone?: string;
+  @Type(() => Number)
+  @IsInt()
+  @Min(1)
+  subjectId?: number;
 }

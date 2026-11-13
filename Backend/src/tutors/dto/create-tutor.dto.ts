@@ -1,41 +1,38 @@
+
 import {
   IsEmail,
-  IsNumber,
+  IsIn,
+  IsNotEmpty,
   IsOptional,
   IsString,
+  MaxLength,
 } from 'class-validator';
 
 export class CreateTutorDto {
   @IsString()
-  name: string;
+  @IsNotEmpty()
+  @MaxLength(150)
+  fullName!: string;
 
   @IsEmail()
-  email: string;
+  @MaxLength(100)
+  email!: string;
 
-  @IsOptional()
   @IsString()
+  @IsOptional()
+  @MaxLength(30)
   phone?: string;
 
-  @IsOptional()
   @IsString()
-  specialization?: string;
-
   @IsOptional()
-  @IsString()
-  qualification?: string;
-
-  @IsOptional()
-  @IsNumber()
-  experienceYears?: number;
-
-  @IsOptional()
-  @IsString()
   bio?: string;
 
-  @IsOptional()
   @IsString()
-  image?: string;
+  @IsIn(['tertiary', 'skills'])
+  level!: string;
 
+  @IsString()
   @IsOptional()
-  isActive?: boolean;
+  @IsIn(['active', 'inactive'])
+  status?: string;
 }

@@ -1,49 +1,44 @@
+
 import {
   Column,
   CreateDateColumn,
   Entity,
-  OneToMany,
+  ManyToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
-import { Course } from '../../courses/entities/course.entity';
+import { Subject } from '../../subjects/entities/subject.entity';
 
 @Entity('teachers')
 export class Teacher {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Column({ length: 150 })
-  name: string;
+  fullName!: string;
 
-  @Column({ unique: true, length: 150 })
-  email: string;
+  @Column({ length: 100, unique: true })
+  email!: string;
 
-  @Column({ nullable: true, length: 30 })
-  phone?: string;
-
-  @Column({ nullable: true, length: 150 })
-  specialization?: string;
-
-  @Column({ nullable: true, length: 200 })
-  qualification?: string;
+  @Column({ length: 30, nullable: true })
+  phone!: string;
 
   @Column({ type: 'clob', nullable: true })
-  bio?: string;
+  bio!: string;
 
-  @Column({ nullable: true, length: 500 })
-  image?: string;
+  @Column({ length: 20 })
+  level!: string;
 
-  @Column({ default: true })
-  isActive: boolean;
+  @Column({ length: 20, default: 'active' })
+  status!: string;
 
-  @OneToMany(() => Course, course => course.teacher)
-  courses: Course[];
+  @ManyToMany(() => Subject, (subject) => subject.teachers)
+  subjects!: Subject[];
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt!: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt!: Date;
 }

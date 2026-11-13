@@ -1,91 +1,50 @@
+
 import {
   Column,
   CreateDateColumn,
   Entity,
-  ManyToOne,
-  OneToMany,
+  ManyToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
-import {
-  EducationLevel,
-  ServiceCategory,
-} from '../../common/enums';
-
-import { Subject } from '../../subjects/entities/subject.entity';
-import { Enrollment } from '../../enrollments/entities/enrollment.entity';
-import { Teacher } from '../../teachers/entities/teacher.entity';
 import { Tutor } from '../../tutors/entities/tutor.entity';
 
 @Entity('courses')
 export class Course {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Column({ length: 200 })
-  title: string;
-
-  @Column({ unique: true, length: 220 })
-  slug: string;
+  title!: string;
 
   @Column({ type: 'clob' })
-  description: string;
+  description!: string;
 
-  @Column({
-    type: 'varchar2',
-    length: 30,
-  })
-  level: EducationLevel;
+  @Column({ length: 50 })
+  level!: string;
 
-  @Column({
-    type: 'varchar2',
-    length: 50,
-  })
-  category: ServiceCategory;
+  @Column({ length: 100 })
+  category!: string;
 
-  @Column({ nullable: true, length: 100 })
-  duration?: string;
+  @Column({ length: 50 })
+  duration!: string;
 
-  @Column({
-    type: 'decimal',
-    precision: 12,
-    scale: 2,
-    default: 0,
-  })
-  price: number;
+  @Column()
+  lessons!: number;
 
-  @Column({ nullable: true, length: 500 })
-  image?: string;
+  @Column({ length: 100, nullable: true })
+  icon!: string;
 
-  @Column({ default: true })
-  isActive: boolean;
+  @Column({ type: 'clob', nullable: true })
+  keywords!: string;
 
-  @Column({ nullable: true })
-  teacherId?: number;
-
-  @Column({ nullable: true })
-  tutorId?: number;
-
-  @ManyToOne(() => Teacher, {
-    nullable: true,
-  })
-  teacher?: Teacher;
-
-  @ManyToOne(() => Tutor, {
-    nullable: true,
-  })
-  tutor?: Tutor;
-
-  @OneToMany(() => Subject, subject => subject.course)
-  subjects: Subject[];
-
-  @OneToMany(() => Enrollment, enrollment => enrollment.course)
-  enrollments: Enrollment[];
+  @ManyToMany(() => Tutor, (tutor) => tutor.courses)
+  tutors!: Tutor[];
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt!: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt!: Date;
 }

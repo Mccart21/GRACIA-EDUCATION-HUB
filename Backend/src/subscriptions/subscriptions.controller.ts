@@ -1,17 +1,13 @@
 import {
-  Body,
   Controller,
-  Delete,
   Get,
   Param,
-  ParseIntPipe,
-  Patch,
-  Post,
+  Req,
+  UseGuards,
 } from '@nestjs/common';
 
 import { SubscriptionsService } from './subscriptions.service';
-import { CreateSubscriptionDto } from './dto/create-subscription.dto';
-import { UpdateSubscriptionDto } from './dto/update-subscription.dto';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @Controller('subscriptions')
 export class SubscriptionsController {
@@ -19,31 +15,54 @@ export class SubscriptionsController {
     private readonly subscriptionsService: SubscriptionsService,
   ) {}
 
-  @Post()
-  create(@Body() dto: CreateSubscriptionDto) {
-    return this.subscriptionsService.create(dto);
+  /**
+   * Public endpoint.
+   *
+   * The subscription page can load plans
+   * without requiring the student to log in first.
+   */
+  @Get('plans')
+  async getPlans() {
+    return this.subscriptionsService.getPlans();
   }
 
-  @Get()
-  findAll() {
-    return this.subscriptionsService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.subscriptionsService.findOne(id);
-  }
-
-  @Patch(':id')
-  update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() dto: UpdateSubscriptionDto,
+  /**
+   * Get one subscription plan.
+   */
+  @Get('plans/:id')
+  async getPlan(
+    @Param('id') id: string,
   ) {
-    return this.subscriptionsService.update(id, dto);
+    return this.subscriptionsService.getPlan(
+      Number(id),
+    );
   }
 
-  @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number) {
-    return this.subscriptionsService.remove(id);
+  /**
+   * Get subscriptions belonging to
+   * the currently authenticated student.
+   */
+  @UseGuards(JwtAuthGuard)
+  @Get('my')
+  async getMySubscriptions(
+    @Req() req: any,
+  ) {
+    return this.subscriptionsService.getUserSubscriptions(
+      req.user.id,
+    );
+  }
+
+  /**
+   * Get the currently active subscription
+   * for the authenticated student.
+   */
+  @UseGuards(JwtAuthGuard)
+  @Get('active')
+  async getActiveSubscription(
+    @Req() req: any,
+  ) {
+    return this.subscriptionsService.getActiveSubscription(
+      req.user.id,
+    );
   }
 }

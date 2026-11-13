@@ -1,17 +1,13 @@
 import {
-  Body,
   Controller,
-  Delete,
+  Post,
   Get,
   Param,
-  ParseIntPipe,
-  Patch,
-  Post,
+  Req,
+  UseGuards,
 } from '@nestjs/common';
-
 import { EnrollmentsService } from './enrollments.service';
-import { CreateEnrollmentDto } from './dto/create-enrollment.dto';
-import { UpdateEnrollmentDto } from './dto/update-enrollment.dto';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @Controller('enrollments')
 export class EnrollmentsController {
@@ -19,31 +15,35 @@ export class EnrollmentsController {
     private readonly enrollmentsService: EnrollmentsService,
   ) {}
 
-  @Post()
-  create(@Body() dto: CreateEnrollmentDto) {
-    return this.enrollmentsService.create(dto);
-  }
-
-  @Get()
-  findAll() {
-    return this.enrollmentsService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.enrollmentsService.findOne(id);
-  }
-
-  @Patch(':id')
-  update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() dto: UpdateEnrollmentDto,
+  @UseGuards(JwtAuthGuard)
+  @Post(':courseId')
+  async enroll(
+    @Req() req: any,
+    @Param('courseId') courseId: string,
   ) {
-    return this.enrollmentsService.update(id, dto);
+    return this.enrollmentsService.enroll(
+      req.user.id,
+      Number(courseId),
+    );
   }
 
-  @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number) {
-    return this.enrollmentsService.remove(id);
+  @UseGuards(JwtAuthGuard)
+  @Get('my')
+  async myEnrollments(@Req() req: any) {
+    return this.enrollmentsService.getUserEnrollments(
+      req.user.id,
+    );
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get(':courseId')
+  async getEnrollment(
+    @Req() req: any,
+    @Param('courseId') courseId: string,
+  ) {
+    return this.enrollmentsService.getEnrollment(
+      req.user.id,
+      Number(courseId),
+    );
   }
 }

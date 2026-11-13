@@ -1,52 +1,66 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
 
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { Enrollment } from './entities/enrollment.entity';
-import { CreateEnrollmentDto } from './dto/create-enrollment.dto';
-import { UpdateEnrollmentDto } from './dto/update-enrollment.dto';
+import { Course } from '../courses/entities/course.entity';
+import { User } from '../users/entities/user.entity';
 
 @Injectable()
 export class EnrollmentsService {
   constructor(
     @InjectRepository(Enrollment)
-    private readonly enrollmentsRepository: Repository<Enrollment>,
+    private readonly enrollmentRepository: Repository<Enrollment>,
+
+    @InjectRepository(Course)
+    private readonly courseRepository: Repository<Course>,
+
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
   ) {}
 
-  async create(dto: CreateEnrollmentDto) {
-    const existing = await this.enrollmentsRepository.findOne({
+  async enroll(userId: number, courseId: number) {
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+    });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    const course = await this.courseRepository.findOne({
+      where: { id: courseId },
+    });
+
+    if (!course) {
+      throw new NotFoundException('Course not found');
+    }
+
+    const existing = await this.enrollmentRepository.findOne({
       where: {
-        userId: dto.userId,
-        courseId: dto.courseId,
-        ...(dto.subjectId !== undefined
-          ? { subjectId: dto.subjectId }
-          : {}),
+        userId,
+        courseId,
       },
     });
 
     if (existing) {
-      throw new BadRequestException(
-        'The student is already enrolled',
-      );
+      return existing;
     }
 
-    const enrollment =
-      this.enrollmentsRepository.create(dto);
+    const enrollment = this.enrollmentRepository.create({
+      userId,
+      courseId,
+    });
 
-    return this.enrollmentsRepository.save(enrollment);
+    return this.enrollmentRepository.save(enrollment);
   }
 
-  async findAll() {
-    return this.enrollmentsRepository.find({
+  async getUserEnrollments(userId: number) {
+    return this.enrollmentRepository.find({
+      where: { userId },
       relations: {
-        user: true,
         course: true,
-        subject: true,
       },
       order: {
         enrolledAt: 'DESC',
@@ -54,44 +68,15 @@ export class EnrollmentsService {
     });
   }
 
-  async findOne(id: number) {
-    const enrollment =
-      await this.enrollmentsRepository.findOne({
-        where: { id },
-        relations: {
-          user: true,
-          course: true,
-          subject: true,
-        },
-      });
-
-    if (!enrollment) {
-      throw new NotFoundException(
-        'Enrollment not found',
-      );
-    }
-
-    return enrollment;
-  }
-
-  async update(
-    id: number,
-    dto: UpdateEnrollmentDto,
-  ) {
-    const enrollment = await this.findOne(id);
-
-    Object.assign(enrollment, dto);
-
-    return this.enrollmentsRepository.save(enrollment);
-  }
-
-  async remove(id: number) {
-    const enrollment = await this.findOne(id);
-
-    await this.enrollmentsRepository.remove(enrollment);
-
-    return {
-      message: 'Enrollment deleted successfully',
-    };
+  async getEnrollment(userId: number, courseId: number) {
+    return this.enrollmentRepository.findOne({
+      where: {
+        userId,
+        courseId,
+      },
+      relations: {
+        course: true,
+      },
+    });
   }
 }

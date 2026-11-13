@@ -1,44 +1,63 @@
+
 import {
+  ConflictException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { Teacher } from './entities/teacher.entity';
 import { CreateTeacherDto } from './dto/create-teacher.dto';
 import { UpdateTeacherDto } from './dto/update-teacher.dto';
+import { Teacher } from './entities/teacher.entity';
 
 @Injectable()
 export class TeachersService {
   constructor(
     @InjectRepository(Teacher)
-    private readonly teacherRepository: Repository<Teacher>,
+    private readonly teachersRepository: Repository<Teacher>,
   ) {}
 
   async create(createTeacherDto: CreateTeacherDto): Promise<Teacher> {
-    const teacher = this.teacherRepository.create(createTeacherDto);
+    const existingTeacher = await this.teachersRepository.findOne({
+      where: { email: createTeacherDto.email },
+    });
 
-    return this.teacherRepository.save(teacher);
+    if (existingTeacher) {
+      throw new ConflictException(
+        `A teacher with email "${createTeacherDto.email}" already exists`,
+      );
+    }
+
+    const teacher = this.teachersRepository.create({
+      ...createTeacherDto,
+      status: createTeacherDto.status ?? 'active',
+    });
+
+    return this.teachersRepository.save(teacher);
   }
 
   async findAll(): Promise<Teacher[]> {
-    return this.teacherRepository.find({
+    return this.teachersRepository.find({
+      relations: {
+        subjects: true,
+      },
       order: {
-        createdAt: 'DESC',
+        fullName: 'ASC',
       },
     });
   }
 
   async findOne(id: number): Promise<Teacher> {
-    const teacher = await this.teacherRepository.findOne({
+    const teacher = await this.teachersRepository.findOne({
       where: { id },
+      relations: {
+        subjects: true,
+      },
     });
 
     if (!teacher) {
-      throw new NotFoundException(
-        `Teacher/Tutor with ID ${id} was not found`,
-      );
+      throw new NotFoundException(`Teacher with ID ${id} not found`);
     }
 
     return teacher;
@@ -50,18 +69,33 @@ export class TeachersService {
   ): Promise<Teacher> {
     const teacher = await this.findOne(id);
 
+    if (
+      updateTeacherDto.email &&
+      updateTeacherDto.email !== teacher.email
+    ) {
+      const existingTeacher = await this.teachersRepository.findOne({
+        where: { email: updateTeacherDto.email },
+      });
+
+      if (existingTeacher && existingTeacher.id !== id) {
+        throw new ConflictException(
+          `A teacher with email "${updateTeacherDto.email}" already exists`,
+        );
+      }
+    }
+
     Object.assign(teacher, updateTeacherDto);
 
-    return this.teacherRepository.save(teacher);
+    return this.teachersRepository.save(teacher);
   }
 
   async remove(id: number): Promise<{ message: string }> {
     const teacher = await this.findOne(id);
 
-    await this.teacherRepository.remove(teacher);
+    await this.teachersRepository.remove(teacher);
 
     return {
-      message: `Teacher/Tutor with ID ${id} has been deleted successfully`,
+      message: `Teacher "${teacher.fullName}" deleted successfully`,
     };
   }
 }

@@ -1,29 +1,33 @@
+
 import {
   IsEmail,
-  IsEnum,
-  IsOptional,
+  IsIn,
+  IsNotEmpty,
   IsString,
   MinLength,
+  Validate,
 } from 'class-validator';
-
-import { EducationLevel } from '../../common/enums';
+import { Match } from '../validators/match.decorator';
+import { EOF } from 'dns/promises';
 
 export class RegisterDto {
   @IsString()
-  name: string;
+  @IsNotEmpty()
+  username!: string;
 
   @IsEmail()
-  email: string;
+  email!: string;
+
+  @IsString()
+  @IsIn(['primary', 'secondary', 'tertiary', 'skills'])
+  level!: string;
 
   @IsString()
   @MinLength(6)
-  password: string;
+  password!: string;
 
-  @IsOptional()
   @IsString()
-  phone?: string;
-
-  @IsOptional()
-  @IsEnum(EducationLevel)
-  level?: EducationLevel;
+  @MinLength(6)
+  @Validate(Match, ['password'])
+  confirmPassword!: string;
 }

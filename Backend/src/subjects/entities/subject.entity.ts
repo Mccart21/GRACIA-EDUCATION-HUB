@@ -1,56 +1,53 @@
+
 import {
   Column,
   CreateDateColumn,
   Entity,
-  ManyToOne,
+  JoinTable,
+  ManyToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
-import { EducationLevel } from '../../common/enums';
-import { Course } from '../../courses/entities/course.entity';
+import { Teacher } from '../../teachers/entities/teacher.entity';
 
 @Entity('subjects')
 export class Subject {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Column({ length: 150 })
-  name: string;
+  name!: string;
 
-  @Column({ unique: true, length: 50 })
-  code: string;
+  @Column({ length: 50, unique: true })
+  code!: string;
 
   @Column({ type: 'clob', nullable: true })
-  description?: string;
+  description!: string;
 
-  @Column({
-    type: 'varchar2',
-    length: 30,
-  })
-  level: EducationLevel;
+  @Column({ length: 20 })
+  level!: string;
 
-  @Column({ nullable: true, length: 500 })
-  image?: string;
+  @Column({ length: 20, default: 'active' })
+  status!: string;
 
-  @Column({ default: true })
-  isActive: boolean;
-
-  @Column()
-  courseId: number;
-
-  @ManyToOne(
-    () => Course,
-    course => course.subjects,
-    {
-      onDelete: 'CASCADE',
+  @ManyToMany(() => Teacher, (teacher) => teacher.subjects)
+  @JoinTable({
+    name: 'teacher_subjects',
+    joinColumn: {
+      name: 'subjectId',
+      referencedColumnName: 'id',
     },
-  )
-  course: Course;
+    inverseJoinColumn: {
+      name: 'teacherId',
+      referencedColumnName: 'id',
+    },
+  })
+  teachers!: Teacher[];
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt!: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt!: Date;
 }

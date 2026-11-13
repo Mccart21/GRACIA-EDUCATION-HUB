@@ -6,68 +6,131 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { Subscription } from './entities/subscription.entity';
-import { CreateSubscriptionDto } from './dto/create-subscription.dto';
-import { UpdateSubscriptionDto } from './dto/update-subscription.dto';
+import { SubscriptionPlan } from './entities/subscription-plan.entity';
+import { UserSubscription } from './entities/user-subscription.entity';
+import { User } from '../users/entities/user.entity';
 
 @Injectable()
 export class SubscriptionsService {
   constructor(
-    @InjectRepository(Subscription)
-    private readonly subscriptionsRepository: Repository<Subscription>,
+    @InjectRepository(SubscriptionPlan)
+    private readonly planRepository: Repository<SubscriptionPlan>,
+
+    @InjectRepository(UserSubscription)
+    private readonly userSubscriptionRepository: Repository<UserSubscription>,
+
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
   ) {}
 
-  async create(dto: CreateSubscriptionDto) {
-    const subscription =
-      this.subscriptionsRepository.create(dto);
-
-    return this.subscriptionsRepository.save(subscription);
-  }
-
-  async findAll() {
-    return this.subscriptionsRepository.find({
+  /**
+   * Return all active subscription plans.
+   *
+   * The database is the source of truth.
+   */
+  async getPlans() {
+    const plans = await this.planRepository.find({
       where: {
-        isActive: true,
+        isActive: 1,
       },
       order: {
         price: 'ASC',
       },
     });
+
+    return plans.map((plan) => ({
+      id: plan.id,
+      code: plan.code,
+      name: plan.name,
+      duration: plan.duration,
+      billingPeriod: plan.billingPeriod,
+      price: Number(plan.price),
+      description: plan.description,
+      popular: plan.popular === 1,
+      features: this.parseFeatures(plan.features),
+    }));
   }
 
-  async findOne(id: number) {
-    const subscription =
-      await this.subscriptionsRepository.findOne({
-        where: { id },
-      });
+  /**
+   * Return one subscription plan.
+   */
+  async getPlan(id: number) {
+    const plan = await this.planRepository.findOne({
+      where: {
+        id,
+        isActive: 1,
+      },
+    });
 
-    if (!subscription) {
+    if (!plan) {
       throw new NotFoundException(
-        'Subscription not found',
+        'Subscription plan not found',
       );
     }
 
-    return subscription;
-  }
-
-  async update(
-    id: number,
-    dto: UpdateSubscriptionDto,
-  ) {
-    const subscription = await this.findOne(id);
-
-    Object.assign(subscription, dto);
-
-    return this.subscriptionsRepository.save(subscription);
-  }
-
-  async remove(id: number) {
-    const subscription = await this.findOne(id);
-
-    await this.subscriptionsRepository.remove(subscription);
-
     return {
-      message: 'Subscription deleted successfully',
+      id: plan.id,
+      code: plan.code,
+      name: plan.name,
+      duration: plan.duration,
+      billingPeriod: plan.billingPeriod,
+      price: Number(plan.price),
+      description: plan.description,
+      popular: plan.popular === 1,
+      features: this.parseFeatures(plan.features),
     };
+  }
+
+  /**
+   * Get a user's subscriptions.
+   */
+  async getUserSubscriptions(userId: number) {
+    return this.userSubscriptionRepository.find({
+      where: {
+        userId,
+      },
+      relations: {
+        plan: true,
+      },
+      order: {
+        createdAt: 'DESC',
+      },
+    });
+  }
+
+  /**
+   * Get the user's currently active subscription.
+   */
+  async getActiveSubscription(userId: number) {
+    return this.userSubscriptionRepository.findOne({
+      where: {
+        userId,
+        status: 'active',
+      },
+      relations: {
+        plan: true,
+      },
+      order: {
+        createdAt: 'DESC',
+      },
+    });
+  }
+
+  private parseFeatures(
+    features: string | null,
+  ): string[] {
+    if (!features) {
+      return [];
+    }
+
+    try {
+      const parsed = JSON.parse(features);
+
+      return Array.isArray(parsed)
+        ? parsed
+        : [];
+    } catch {
+      return [];
+    }
   }
 }

@@ -1,66 +1,35 @@
+
 import {
   Column,
   CreateDateColumn,
   Entity,
   ManyToOne,
+  JoinColumn,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { EnrollmentStatus } from '../../common/enums';
-
 import { User } from '../../users/entities/user.entity';
 import { Course } from '../../courses/entities/course.entity';
-import { Subject } from '../../subjects/entities/subject.entity';
 
 @Entity('enrollments')
 export class Enrollment {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn({ name: 'id', type: 'number' })
+  id!: number;
 
-  @Column()
-  userId: number;
+  @Column({ name: 'userId', type: 'number' })
+  userId!: number;
 
-  @Column()
-  courseId: number;
+  @Column({ name: 'courseId', type: 'number' })
+  courseId!: number;
 
-  @Column({ nullable: true })
-  subjectId?: number;
+  @ManyToOne(() => User)
+  @JoinColumn({ name: 'userId', referencedColumnName: 'id' })
+  user!: User;
 
-  @Column({
-    type: 'decimal',
-    precision: 5,
-    scale: 2,
-    default: 0,
-  })
-  progress: number;
+  @ManyToOne(() => Course)
+  @JoinColumn({ name: 'courseId', referencedColumnName: 'id' })
+  course!: Course;
 
-  @Column({
-    type: 'varchar2',
-    length: 20,
-    default: EnrollmentStatus.ACTIVE,
-  })
-  status: EnrollmentStatus;
-
-  @ManyToOne(
-    () => User,
-    user => user.enrollments,
-  )
-  user: User;
-
-  @ManyToOne(
-    () => Course,
-    course => course.enrollments,
-  )
-  course: Course;
-
-  @ManyToOne(
-    () => Subject,
-    {
-      nullable: true,
-    },
-  )
-  subject?: Subject;
-
-  @CreateDateColumn()
-  enrolledAt: Date;
+  @CreateDateColumn({ name: 'enrolledAt', type: 'timestamp' })
+  enrolledAt!: Date;
 }
