@@ -1,0 +1,254 @@
+
+.educator-footer {
+  margin-top: 80px;
+  padding: 60px 0 0;
+  background: #101a2d;
+  color: #ffffff;
+  width: 100%;
+}
+
+.educator-footer,
+.educator-footer * {
+  box-sizing: border-box;
+}
+
+.educator-footer a {
+  text-decoration: none;
+}
+
+.educator-footer__container {
+  width: min(1200px, calc(100% - 48px));
+  margin: 0 auto;
+}
+
+.educator-footer__grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1.2fr 1.5fr;
+  gap: 42px;
+  padding-bottom: 48px;
+}
+
+.educator-footer__brand {
+  max-width: 340px;
+}
+
+.educator-footer__logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.educator-footer__logo-image {
+  width: 58px;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  border-radius: 13px;
+  background: #ffffff;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+}
+
+.educator-footer__logo-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.educator-footer__logo-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+
+.educator-footer__logo-text strong {
+  color: #ffffff;
+  font-size: 21px;
+  font-weight: 900;
+  letter-spacing: 1.8px;
+}
+
+.educator-footer__logo-text span {
+  margin-top: 5px;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1.7px;
+}
+
+.educator-footer__description {
+  margin: 0;
+  color: #aeb9ca;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.educator-footer__socials {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.educator-footer__social-link {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.educator-footer__social-link:hover {
+  transform: translateY(-3px);
+  background: rgba(255, 201, 40, 0.16);
+  border-color: rgba(255, 201, 40, 0.5);
+  color: #ffc928;
+}
+
+.educator-footer__social-link svg {
+  width: 18px;
+  height: 18px;
+}
+
+.educator-footer__column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  min-width: 0;
+}
+
+.educator-footer__column h3 {
+  margin: 0 0 8px;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.educator-footer__column > a:not(.educator-footer__contact) {
+  color: #aeb9ca;
+  font-size: 14px;
+  line-height: 1.5;
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.educator-footer__column > a:not(.educator-footer__contact):hover {
+  color: #ffffff;
+  transform: translateX(3px);
+}
+
+.educator-footer__contact {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  min-width: 0;
+  color: #aeb9ca;
+  font-size: 14px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+  transition: color 0.2s ease;
+}
+
+.educator-footer__contact:hover {
+  color: #ffffff;
+}
+
+.educator-footer__contact svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: #ffc928;
+}
+
+.educator-footer__contact-note {
+  margin: 4px 0 0;
+  color: #8995a8;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.educator-footer__bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 22px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.educator-footer__bottom p {
+  margin: 0;
+  color: #8995a8;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.educator-footer__legal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.educator-footer__legal a {
+  color: #8995a8;
+  font-size: 13px;
+  transition: color 0.2s ease;
+}
+
+.educator-footer__legal a:hover {
+  color: #ffffff;
+}
+
+@media (max-width: 1000px) {
+  .educator-footer__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 38px;
+  }
+
+  .educator-footer__brand {
+    max-width: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .educator-footer {
+    margin-top: 48px;
+    padding-top: 42px;
+  }
+
+  .educator-footer__container {
+    width: calc(100% - 36px);
+  }
+
+  .educator-footer__grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
+    padding-bottom: 35px;
+  }
+
+  .educator-footer__bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .educator-footer__legal {
+    flex-direction: column;
+    gap: 10px;
+  }
+}

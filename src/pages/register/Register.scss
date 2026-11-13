@@ -1,8 +1,7 @@
 /* ============================================================
    GRACIA EDUCATION HUB
    REGISTER PAGE
-   BACKEND-READY REGISTRATION
-   SINGLE CENTERED SCREEN
+   CLEAN SINGLE-CARD DESIGN
 ============================================================ */
 
 .gracia-register {
@@ -51,6 +50,7 @@
     55px 55px;
 }
 
+
 /* ============================================================
    BACKGROUND DECORATION
 ============================================================ */
@@ -95,8 +95,9 @@
   pointer-events: none;
 }
 
+
 /* ============================================================
-   REMOVE OLD SPLIT SCREEN
+   OLD SPLIT SCREEN
 ============================================================ */
 
 .gracia-register-visual {
@@ -106,6 +107,7 @@
 .register-decoration {
   display: none;
 }
+
 
 /* ============================================================
    REGISTER AREA
@@ -118,6 +120,7 @@
 
   width: 100%;
 }
+
 
 /* ============================================================
    CONTAINER
@@ -137,117 +140,15 @@
   align-items: center;
 }
 
+
 /* ============================================================
-   BRAND
+   REMOVE OLD EXTERNAL BRANDING
 ============================================================ */
 
 .mobile-register-brand {
-  display: block;
-
-  margin-bottom: 18px;
+  display: none !important;
 }
 
-.gracia-register-logo {
-  display: inline-flex;
-
-  align-items: center;
-
-  gap: 14px;
-
-  color: #ffffff;
-
-  text-decoration: none;
-
-  transition:
-    transform 0.2s ease,
-    opacity 0.2s ease;
-}
-
-.gracia-register-logo:hover {
-  transform: translateY(-1px);
-  opacity: 0.96;
-}
-
-/* ============================================================
-   LOGO WRAPPER
-============================================================ */
-
-.logo-image-wrapper {
-  width: 72px;
-  height: 72px;
-
-  display: flex;
-
-  align-items: center;
-  justify-content: center;
-
-  flex-shrink: 0;
-
-  padding: 4px;
-
-  box-sizing: border-box;
-
-  border-radius: 17px;
-
-  background: rgba(255, 255, 255, 0.98);
-
-  border: 2px solid rgba(255, 255, 255, 0.95);
-
-  box-shadow:
-    0 12px 30px rgba(0, 0, 0, 0.24),
-    0 0 0 5px rgba(255, 255, 255, 0.06);
-}
-
-/* ============================================================
-   REAL LOGO
-============================================================ */
-
-.gracia-logo-image {
-  width: 100%;
-  height: 100%;
-
-  display: block;
-
-  object-fit: contain;
-
-  border-radius: 12px;
-}
-
-/* ============================================================
-   LOGO TEXT
-============================================================ */
-
-.gracia-logo-text {
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 5px;
-}
-
-.gracia-logo-text strong {
-  color: #ffffff;
-
-  font-size: 24px;
-
-  font-weight: 900;
-
-  letter-spacing: 2.2px;
-
-  line-height: 1;
-}
-
-.gracia-logo-text span {
-  color: rgba(255, 255, 255, 0.72);
-
-  font-size: 9px;
-
-  font-weight: 800;
-
-  letter-spacing: 1.8px;
-
-  line-height: 1.1;
-}
 
 /* ============================================================
    REGISTER CARD
@@ -256,7 +157,7 @@
 .register-card {
   width: 100%;
 
-  padding: 29px 32px;
+  padding: 32px 32px 29px;
 
   border-radius: 21px;
 
@@ -277,6 +178,61 @@
   box-sizing: border-box;
 }
 
+
+/* ============================================================
+   LOGO INSIDE MAIN CARD
+============================================================ */
+
+.register-card-logo {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 72px;
+  height: 72px;
+
+  margin: 0 auto 18px;
+
+  padding: 4px;
+
+  box-sizing: border-box;
+
+  border-radius: 17px;
+
+  background: #ffffff;
+
+  border: 1px solid #e4e7ec;
+
+  box-shadow:
+    0 8px 20px rgba(16, 24, 40, 0.08);
+
+  text-decoration: none;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.register-card-logo:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 12px 25px rgba(16, 24, 40, 0.12);
+}
+
+.register-card-logo img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: contain;
+
+  border-radius: 12px;
+}
+
+
 /* ============================================================
    REGISTER HEADER
 ============================================================ */
@@ -285,20 +241,6 @@
   text-align: center;
 
   margin-bottom: 19px;
-}
-
-.register-eyebrow {
-  display: inline-block;
-
-  margin-bottom: 7px;
-
-  color: #0b4aa2;
-
-  font-size: 9px;
-
-  font-weight: 900;
-
-  letter-spacing: 1.6px;
 }
 
 .register-header h2 {
@@ -316,7 +258,7 @@
 }
 
 .register-header p {
-  margin: 6px 0 0;
+  margin: 7px 0 0;
 
   color: #667085;
 
@@ -326,6 +268,7 @@
 
   font-weight: 600;
 }
+
 
 /* ============================================================
    ERROR
@@ -352,6 +295,7 @@
 
   text-align: center;
 }
+
 
 /* ============================================================
    SUCCESS
@@ -390,6 +334,7 @@
   flex-shrink: 0;
 }
 
+
 /* ============================================================
    FORM
 ============================================================ */
@@ -401,6 +346,7 @@
 
   gap: 12px;
 }
+
 
 /* ============================================================
    FIELD
@@ -423,6 +369,7 @@
   font-weight: 800;
 }
 
+
 /* ============================================================
    PASSWORD HEADING
 ============================================================ */
@@ -439,6 +386,7 @@
 .password-heading label {
   margin-bottom: 0;
 }
+
 
 /* ============================================================
    INPUT
@@ -483,6 +431,7 @@
   cursor: not-allowed;
 }
 
+
 /* ============================================================
    INPUT ICON
 ============================================================ */
@@ -505,6 +454,7 @@
 .register-input:focus-within .input-icon {
   color: #0b4aa2;
 }
+
 
 /* ============================================================
    INPUT FIELD
@@ -556,6 +506,7 @@
   appearance: auto;
 }
 
+
 /* ============================================================
    PASSWORD BUTTON
 ============================================================ */
@@ -595,6 +546,7 @@
   cursor: not-allowed;
 }
 
+
 /* ============================================================
    PASSWORD HINT
 ============================================================ */
@@ -610,6 +562,7 @@
 
   font-weight: 500;
 }
+
 
 /* ============================================================
    LEARNING LEVEL INFORMATION
@@ -648,6 +601,7 @@
 
   color: #0b4aa2;
 }
+
 
 /* ============================================================
    TERMS
@@ -708,8 +662,7 @@
     color 0.2s ease;
 }
 
-.terms-option input:checked
-+ .custom-checkbox {
+.terms-option input:checked + .custom-checkbox {
   border-color: #ffc928;
 
   background: #ffc928;
@@ -730,6 +683,7 @@
 
   text-decoration: underline;
 }
+
 
 /* ============================================================
    SUBMIT BUTTON
@@ -808,6 +762,7 @@
   transform: translateX(3px);
 }
 
+
 /* ============================================================
    LOADING SPINNER
 ============================================================ */
@@ -821,6 +776,7 @@
     transform: rotate(360deg);
   }
 }
+
 
 /* ============================================================
    LOGIN LINK
@@ -861,6 +817,7 @@
   text-decoration: underline;
 }
 
+
 /* ============================================================
    COPYRIGHT
 ============================================================ */
@@ -877,6 +834,7 @@
   text-align: center;
 }
 
+
 /* ============================================================
    RESPONSIVE
 ============================================================ */
@@ -886,39 +844,23 @@
     padding: 24px 14px;
   }
 
-  .mobile-register-brand {
-    margin-bottom: 16px;
+  .register-card {
+    padding: 27px 20px 25px;
+
+    border-radius: 18px;
   }
 
-  .logo-image-wrapper {
-    width: 62px;
-    height: 62px;
+  .register-card-logo {
+    width: 64px;
+    height: 64px;
+
+    margin-bottom: 16px;
 
     border-radius: 15px;
   }
 
-  .gracia-logo-image {
+  .register-card-logo img {
     border-radius: 11px;
-  }
-
-  .gracia-register-logo {
-    gap: 12px;
-  }
-
-  .gracia-logo-text strong {
-    font-size: 21px;
-  }
-
-  .gracia-logo-text span {
-    font-size: 8px;
-
-    letter-spacing: 1.5px;
-  }
-
-  .register-card {
-    padding: 25px 20px;
-
-    border-radius: 18px;
   }
 
   .register-header {
@@ -938,6 +880,7 @@
   }
 }
 
+
 /* ============================================================
    SMALL MOBILE
 ============================================================ */
@@ -947,41 +890,23 @@
     padding: 18px 11px;
   }
 
-  .mobile-register-brand {
-    margin-bottom: 13px;
+  .register-card {
+    padding: 23px 17px 21px;
+
+    border-radius: 17px;
   }
 
-  .logo-image-wrapper {
-    width: 55px;
-    height: 55px;
+  .register-card-logo {
+    width: 58px;
+    height: 58px;
+
+    margin-bottom: 14px;
 
     border-radius: 14px;
   }
 
-  .gracia-register-logo {
-    gap: 10px;
-  }
-
-  .gracia-logo-text {
-    gap: 4px;
-  }
-
-  .gracia-logo-text strong {
-    font-size: 18px;
-
-    letter-spacing: 1.8px;
-  }
-
-  .gracia-logo-text span {
-    font-size: 7px;
-
-    letter-spacing: 1.2px;
-  }
-
-  .register-card {
-    padding: 21px 17px;
-
-    border-radius: 17px;
+  .register-card-logo img {
+    border-radius: 10px;
   }
 
   .register-header h2 {
@@ -1008,11 +933,9 @@
   }
 }
 
+
 /* ============================================================
    SHORT LAPTOP SCREENS
-
-   Keeps the registration page usable on smaller laptop
-   displays without making the logo tiny.
 ============================================================ */
 
 @media (max-height: 800px) and (min-width: 601px) {
@@ -1021,41 +944,27 @@
     padding-bottom: 16px;
   }
 
-  .mobile-register-brand {
-    margin-bottom: 10px;
-  }
-
-  .logo-image-wrapper {
-    width: 58px;
-    height: 58px;
-
-    border-radius: 14px;
-  }
-
-  .gracia-register-logo {
-    gap: 11px;
-  }
-
-  .gracia-logo-text strong {
-    font-size: 20px;
-  }
-
-  .gracia-logo-text span {
-    font-size: 7px;
-  }
-
   .register-card {
-    padding: 22px 29px;
+    padding: 24px 29px 22px;
 
     border-radius: 18px;
   }
 
-  .register-header {
-    margin-bottom: 14px;
+  .register-card-logo {
+    width: 60px;
+    height: 60px;
+
+    margin-bottom: 13px;
+
+    border-radius: 14px;
   }
 
-  .register-eyebrow {
-    margin-bottom: 5px;
+  .register-card-logo img {
+    border-radius: 10px;
+  }
+
+  .register-header {
+    margin-bottom: 14px;
   }
 
   .register-header h2 {

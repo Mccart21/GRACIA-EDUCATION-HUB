@@ -1,5 +1,6 @@
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 
-import { Link, useParams } from "react-router-dom";
 import {
   ArrowLeft,
   ArrowRight,
@@ -29,525 +30,33 @@ import Container from "../../components/common/Container";
 import "./CourseDetails.scss";
 
 /* ============================================================
+   API
+============================================================ */
+
+const API_BASE_URL = "http://localhost:3000/api";
+
+/* ============================================================
    TYPES
 ============================================================ */
 
-type CourseLevel =
-  | "Primary"
-  | "Secondary"
-  | "Tertiary"
-  | "Practical Skills";
-
-type CourseIcon =
-  | "book"
-  | "graduation"
-  | "laptop"
-  | "palette"
-  | "data"
-  | "code"
-  | "business"
-  | "agriculture"
-  | "factory"
-  | "career";
-
-interface Course {
+type Course = {
   id: number;
   title: string;
   description: string;
-  level: CourseLevel;
+  level: string;
   category: string;
   duration: string;
   lessons: number;
-  icon: CourseIcon;
-  keywords: string[];
-}
-
-/* ============================================================
-   COURSE DATA
-============================================================ */
-
-const courses: Course[] = [
-  /* ============================================================
-     PRIMARY
-  ============================================================ */
-
-  {
-    id: 1,
-    title: "Primary English",
-    description:
-      "Build strong communication, reading, writing, grammar and language skills for primary learners.",
-    level: "Primary",
-    category: "English",
-    duration: "Flexible",
-    lessons: 20,
-    icon: "book",
-    keywords: [
-      "english",
-      "primary",
-      "reading",
-      "writing",
-      "grammar",
-      "language",
-    ],
-  },
-
-  {
-    id: 2,
-    title: "Primary Mathematics",
-    description:
-      "Develop strong mathematical foundations through structured and practical learning.",
-    level: "Primary",
-    category: "Mathematics",
-    duration: "Flexible",
-    lessons: 24,
-    icon: "book",
-    keywords: [
-      "maths",
-      "mathematics",
-      "primary",
-      "numbers",
-      "calculation",
-    ],
-  },
-
-  {
-    id: 3,
-    title: "Primary Science",
-    description:
-      "Explore essential science concepts and develop a strong foundation for further studies.",
-    level: "Primary",
-    category: "Science",
-    duration: "Flexible",
-    lessons: 22,
-    icon: "book",
-    keywords: [
-      "science",
-      "primary",
-      "environment",
-      "biology",
-    ],
-  },
-
-  {
-    id: 4,
-    title: "Primary Agriculture",
-    description:
-      "Learn essential agricultural concepts and practical knowledge for primary learners.",
-    level: "Primary",
-    category: "Agriculture",
-    duration: "Flexible",
-    lessons: 18,
-    icon: "agriculture",
-    keywords: [
-      "agriculture",
-      "farming",
-      "crops",
-      "primary",
-    ],
-  },
-
-  /* ============================================================
-     SECONDARY
-  ============================================================ */
-
-  {
-    id: 5,
-    title: "Secondary English",
-    description:
-      "Strengthen English language, communication, comprehension and writing skills for secondary learners.",
-    level: "Secondary",
-    category: "English",
-    duration: "Flexible",
-    lessons: 24,
-    icon: "graduation",
-    keywords: [
-      "english",
-      "secondary",
-      "writing",
-      "grammar",
-      "communication",
-    ],
-  },
-
-  {
-    id: 6,
-    title: "Secondary Mathematics",
-    description:
-      "Master important mathematical concepts and build confidence for secondary school examinations.",
-    level: "Secondary",
-    category: "Mathematics",
-    duration: "Flexible",
-    lessons: 30,
-    icon: "graduation",
-    keywords: [
-      "maths",
-      "mathematics",
-      "secondary",
-      "examinations",
-    ],
-  },
-
-  {
-    id: 7,
-    title: "Secondary Physics",
-    description:
-      "Understand physics concepts through structured lessons, examples and practical applications.",
-    level: "Secondary",
-    category: "Physics",
-    duration: "Flexible",
-    lessons: 30,
-    icon: "graduation",
-    keywords: [
-      "physics",
-      "secondary",
-      "science",
-      "experiments",
-    ],
-  },
-
-  {
-    id: 8,
-    title: "Secondary Biology",
-    description:
-      "Develop a deeper understanding of living organisms, biological systems and related concepts.",
-    level: "Secondary",
-    category: "Biology",
-    duration: "Flexible",
-    lessons: 30,
-    icon: "graduation",
-    keywords: [
-      "biology",
-      "secondary",
-      "science",
-      "living organisms",
-    ],
-  },
-
-  {
-    id: 9,
-    title: "Secondary Chemistry",
-    description:
-      "Learn fundamental chemistry concepts and develop the knowledge needed for further study.",
-    level: "Secondary",
-    category: "Chemistry",
-    duration: "Flexible",
-    lessons: 30,
-    icon: "graduation",
-    keywords: [
-      "chemistry",
-      "secondary",
-      "science",
-      "laboratory",
-    ],
-  },
-
-  {
-    id: 10,
-    title: "Secondary Agriculture",
-    description:
-      "Build practical and academic knowledge in agriculture, crop production and related areas.",
-    level: "Secondary",
-    category: "Agriculture",
-    duration: "Flexible",
-    lessons: 24,
-    icon: "agriculture",
-    keywords: [
-      "agriculture",
-      "secondary",
-      "farming",
-      "crops",
-      "livestock",
-    ],
-  },
-
-  /* ============================================================
-     TERTIARY
-  ============================================================ */
-
-  {
-    id: 11,
-    title: "University Entrance & On-Course Training",
-    description:
-      "Preparation and academic support for university entrance and students already undertaking university studies.",
-    level: "Tertiary",
-    category: "University Support",
-    duration: "Flexible",
-    lessons: 30,
-    icon: "graduation",
-    keywords: [
-      "university",
-      "tertiary",
-      "entrance",
-      "students",
-      "on-course",
-      "academic",
-    ],
-  },
-
-  {
-    id: 12,
-    title: "Professional Proposal & Research Writing",
-    description:
-      "Develop practical skills for preparing professional proposals, academic work and research documents.",
-    level: "Tertiary",
-    category: "Research",
-    duration: "Flexible",
-    lessons: 20,
-    icon: "career",
-    keywords: [
-      "proposal",
-      "research",
-      "writing",
-      "professional",
-      "academic",
-    ],
-  },
-
-  {
-    id: 13,
-    title: "Data Analysis",
-    description:
-      "Learn practical data analysis using tools such as Stata, SPSS, KoboToolbox, Power BI and GenStat.",
-    level: "Tertiary",
-    category: "Data Analysis",
-    duration: "Flexible",
-    lessons: 28,
-    icon: "data",
-    keywords: [
-      "data",
-      "analysis",
-      "stata",
-      "spss",
-      "kobotoolbox",
-      "powerbi",
-      "power bi",
-      "genstat",
-      "statistics",
-    ],
-  },
-
-  {
-    id: 14,
-    title: "Programming with R & Java",
-    description:
-      "Develop practical programming knowledge using R and Java for academic and professional applications.",
-    level: "Tertiary",
-    category: "Programming",
-    duration: "Flexible",
-    lessons: 30,
-    icon: "code",
-    keywords: [
-      "programming",
-      "r",
-      "java",
-      "software",
-      "coding",
-      "technology",
-    ],
-  },
-
-  /* ============================================================
-     PRACTICAL SKILLS
-  ============================================================ */
-
-  {
-    id: 15,
-    title: "Computer Basics",
-    description:
-      "Build essential computer skills for education, work, business and everyday digital activities.",
-    level: "Practical Skills",
-    category: "Digital Skills",
-    duration: "Flexible",
-    lessons: 15,
-    icon: "laptop",
-    keywords: [
-      "computer",
-      "basics",
-      "digital",
-      "technology",
-      "ict",
-    ],
-  },
-
-  {
-    id: 16,
-    title: "Software Packages",
-    description:
-      "Learn how to understand and work with different software packages used in education and professional environments.",
-    level: "Practical Skills",
-    category: "Digital Skills",
-    duration: "Flexible",
-    lessons: 18,
-    icon: "laptop",
-    keywords: [
-      "software",
-      "packages",
-      "computer",
-      "digital",
-      "office",
-    ],
-  },
-
-  {
-    id: 17,
-    title: "CV Writing & Job Applications",
-    description:
-      "Get practical support with CV writing, job applications, interviews and professional applications.",
-    level: "Practical Skills",
-    category: "Career Development",
-    duration: "Flexible",
-    lessons: 12,
-    icon: "career",
-    keywords: [
-      "cv",
-      "curriculum vitae",
-      "job",
-      "application",
-      "interview",
-      "career",
-      "employment",
-    ],
-  },
-
-  {
-    id: 18,
-    title: "Crop Production & Animal Rearing",
-    description:
-      "Learn practical approaches to growing crops and rearing animals for personal, community and business development.",
-    level: "Practical Skills",
-    category: "Agriculture",
-    duration: "Flexible",
-    lessons: 20,
-    icon: "agriculture",
-    keywords: [
-      "crops",
-      "farming",
-      "agriculture",
-      "animals",
-      "animal rearing",
-      "livestock",
-    ],
-  },
-
-  {
-    id: 19,
-    title: "Manufacturing",
-    description:
-      "Explore practical manufacturing knowledge and skills for productive and entrepreneurial activities.",
-    level: "Practical Skills",
-    category: "Manufacturing",
-    duration: "Flexible",
-    lessons: 18,
-    icon: "factory",
-    keywords: [
-      "manufacturing",
-      "production",
-      "business",
-      "industry",
-    ],
-  },
-
-  {
-    id: 20,
-    title: "Photoshop Designing",
-    description:
-      "Develop practical graphic design skills using Photoshop for creative and professional work.",
-    level: "Practical Skills",
-    category: "Design",
-    duration: "Flexible",
-    lessons: 20,
-    icon: "palette",
-    keywords: [
-      "photoshop",
-      "design",
-      "graphic design",
-      "graphics",
-      "creative",
-    ],
-  },
-
-  {
-    id: 21,
-    title: "Entrepreneurship",
-    description:
-      "Develop entrepreneurial thinking and practical knowledge for starting and growing business opportunities.",
-    level: "Practical Skills",
-    category: "Business",
-    duration: "Flexible",
-    lessons: 18,
-    icon: "business",
-    keywords: [
-      "entrepreneurship",
-      "business",
-      "enterprise",
-      "startup",
-    ],
-  },
-
-  {
-    id: 22,
-    title: "Investment & Business Management",
-    description:
-      "Learn practical principles of investment, financial decision-making and business management.",
-    level: "Practical Skills",
-    category: "Business",
-    duration: "Flexible",
-    lessons: 20,
-    icon: "business",
-    keywords: [
-      "investment",
-      "business",
-      "management",
-      "finance",
-      "entrepreneurship",
-    ],
-  },
-
-  {
-    id: 23,
-    title: "Monitoring & Evaluation",
-    description:
-      "Build practical knowledge in monitoring, evaluation, reporting and assessing project performance.",
-    level: "Practical Skills",
-    category: "Monitoring & Evaluation",
-    duration: "Flexible",
-    lessons: 18,
-    icon: "data",
-    keywords: [
-      "monitoring",
-      "evaluation",
-      "m&e",
-      "projects",
-      "reporting",
-      "data",
-    ],
-  },
-
-  {
-    id: 24,
-    title: "Nutrition",
-    description:
-      "Learn practical nutrition concepts that support healthy individuals, families and communities.",
-    level: "Practical Skills",
-    category: "Nutrition",
-    duration: "Flexible",
-    lessons: 16,
-    icon: "book",
-    keywords: [
-      "nutrition",
-      "food",
-      "health",
-      "community",
-    ],
-  },
-];
+  icon?: string;
+  keywords?: string[] | string;
+};
 
 /* ============================================================
    ICON
 ============================================================ */
 
-const getCourseIcon = (icon: CourseIcon) => {
-  switch (icon) {
+const getCourseIcon = (icon?: string) => {
+  switch (icon?.toLowerCase()) {
     case "graduation":
       return <GraduationCap size={42} />;
 
@@ -585,36 +94,251 @@ const getCourseIcon = (icon: CourseIcon) => {
 ============================================================ */
 
 const CourseDetails = () => {
-  /*
-   * IMPORTANT:
-   * AppRoutes.tsx uses:
-   *
-   * /courses/:courseId
-   *
-   * Therefore we MUST read "courseId" here.
-   */
+  const navigate = useNavigate();
 
   const { courseId: rawId } = useParams<{
     courseId: string;
   }>();
 
-  /*
-   * Convert the URL parameter into a number.
-   *
-   * Example:
-   * /courses/1
-   *
-   * rawId = "1"
-   * courseId = 1
-   */
+  const courseId = rawId ? Number(rawId.trim()) : NaN;
 
-  const courseId = rawId
-    ? Number(rawId.trim())
-    : NaN;
+  const [course, setCourse] = useState<Course | null>(null);
+  const [allCourses, setAllCourses] = useState<Course[]>([]);
 
-  const course = courses.find(
-    (item) => item.id === courseId
-  );
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  /* ==========================================================
+     ENROLLMENT STATE
+  ========================================================== */
+
+  const [enrolled, setEnrolled] = useState(false);
+
+  /* ==========================================================
+     FETCH COURSE
+  ========================================================== */
+
+  useEffect(() => {
+    const fetchCourse = async () => {
+      if (!Number.isInteger(courseId)) {
+        setError("Invalid course ID.");
+        setLoading(false);
+        return;
+      }
+
+      try {
+        setLoading(true);
+        setError("");
+
+        const [courseResponse, coursesResponse] =
+          await Promise.all([
+            fetch(`${API_BASE_URL}/courses/${courseId}`),
+            fetch(`${API_BASE_URL}/courses`),
+          ]);
+
+        if (!courseResponse.ok) {
+          if (courseResponse.status === 404) {
+            setCourse(null);
+            setError("");
+            return;
+          }
+
+          throw new Error("Failed to load course.");
+        }
+
+        if (!coursesResponse.ok) {
+          throw new Error("Failed to load courses.");
+        }
+
+        const courseData: Course =
+          await courseResponse.json();
+
+        const coursesData: Course[] =
+          await coursesResponse.json();
+
+        setCourse(courseData);
+        setAllCourses(coursesData);
+      } catch (err) {
+        console.error("Course details error:", err);
+
+        setError(
+          "Unable to load this course. Please check that the backend is running."
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCourse();
+  }, [courseId]);
+
+  /* ==========================================================
+     CHECK EXISTING ENROLLMENT
+  ========================================================== */
+
+  useEffect(() => {
+    const checkEnrollment = async () => {
+      if (!Number.isInteger(courseId)) {
+        return;
+      }
+
+      const token = localStorage.getItem("gracia_token");
+
+      if (!token) {
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          `${API_BASE_URL}/enrollments/${courseId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+
+          if (data) {
+            setEnrolled(true);
+          }
+        }
+
+        if (
+          response.status === 401 ||
+          response.status === 403
+        ) {
+          localStorage.removeItem("gracia_token");
+          setEnrolled(false);
+        }
+      } catch (err) {
+        console.error(
+          "Enrollment check error:",
+          err
+        );
+      }
+    };
+
+    checkEnrollment();
+  }, [courseId]);
+
+  /* ==========================================================
+     ENROLL / CONTINUE TO SUBSCRIPTION
+  ========================================================== */
+
+  const handleEnroll = () => {
+    if (!course) {
+      return;
+    }
+
+    /*
+      Save the selected course temporarily.
+
+      This allows the subscription page and later
+      registration/login flow to know which course
+      the student selected.
+    */
+
+    localStorage.setItem(
+      "gracia_pending_course",
+      JSON.stringify({
+        courseId: course.id,
+        title: course.title,
+      })
+    );
+
+    /*
+      Go directly to the subscription page.
+
+      Example:
+      /subscriptions?courseId=7
+    */
+
+    navigate(
+      `/subscriptions?courseId=${course.id}`
+    );
+  };
+
+  /* ==========================================================
+     LOADING
+  ========================================================== */
+
+  if (loading) {
+    return (
+      <div className="course-details-page">
+        <Navbar />
+
+        <main className="course-not-found">
+          <Container>
+            <div className="not-found-card">
+              <div className="not-found-icon">
+                <BookOpen size={34} />
+              </div>
+
+              <span>
+                GRACIA EDUCATION HUB
+              </span>
+
+              <h1>
+                Loading Course...
+              </h1>
+
+              <p>
+                Please wait while we load the
+                course information.
+              </p>
+            </div>
+          </Container>
+        </main>
+
+        <Footer />
+      </div>
+    );
+  }
+
+  /* ==========================================================
+     ERROR
+  ========================================================== */
+
+  if (error) {
+    return (
+      <div className="course-details-page">
+        <Navbar />
+
+        <main className="course-not-found">
+          <Container>
+            <div className="not-found-card">
+              <div className="not-found-icon">
+                <BookOpen size={34} />
+              </div>
+
+              <span>
+                GRACIA EDUCATION HUB
+              </span>
+
+              <h1>
+                Unable to Load Course
+              </h1>
+
+              <p>{error}</p>
+
+              <Link
+                to="/courses"
+                className="back-courses-button"
+              >
+                <ArrowLeft size={17} />
+                Back to Courses
+              </Link>
+            </div>
+          </Container>
+        </main>
+
+        <Footer />
+      </div>
+    );
+  }
 
   /* ==========================================================
      COURSE NOT FOUND
@@ -628,7 +352,6 @@ const CourseDetails = () => {
         <main className="course-not-found">
           <Container>
             <div className="not-found-card">
-
               <div className="not-found-icon">
                 <BookOpen size={34} />
               </div>
@@ -642,10 +365,10 @@ const CourseDetails = () => {
               </h1>
 
               <p>
-                The course you are looking for could
-                not be found. Please return to our
-                course catalog and choose another
-                program.
+                The course you are looking for
+                could not be found. Please return
+                to the course catalog and choose
+                another program.
               </p>
 
               <Link
@@ -655,7 +378,6 @@ const CourseDetails = () => {
                 <ArrowLeft size={17} />
                 Back to Courses
               </Link>
-
             </div>
           </Container>
         </main>
@@ -669,7 +391,7 @@ const CourseDetails = () => {
      RELATED COURSES
   ========================================================== */
 
-  const relatedCourses = courses
+  const relatedCourses = allCourses
     .filter(
       (item) =>
         item.id !== course.id &&
@@ -677,9 +399,12 @@ const CourseDetails = () => {
     )
     .slice(0, 3);
 
+  /* ==========================================================
+     PAGE
+  ========================================================== */
+
   return (
     <div className="course-details-page">
-
       <Navbar />
 
       <main>
@@ -689,29 +414,14 @@ const CourseDetails = () => {
         ==================================================== */}
 
         <section className="course-details-hero">
-
-          <div className="course-details-background">
-
-            <div className="details-glow details-glow-one" />
-
-            <div className="details-glow details-glow-two" />
-
-            <div className="details-grid" />
-
-          </div>
-
           <Container>
 
             {/* BREADCRUMB */}
 
             <div className="details-breadcrumb">
-
               <Link to="/courses">
-
                 <ArrowLeft size={15} />
-
                 All Courses
-
               </Link>
 
               <span>/</span>
@@ -725,7 +435,6 @@ const CourseDetails = () => {
               <span>
                 {course.category}
               </span>
-
             </div>
 
             {/* HERO CONTENT */}
@@ -735,15 +444,11 @@ const CourseDetails = () => {
               <div className="details-main">
 
                 <div className="details-icon">
-
                   {getCourseIcon(course.icon)}
-
                 </div>
 
                 <div className="details-category">
-
                   {course.category}
-
                 </div>
 
                 <h1>
@@ -773,9 +478,35 @@ const CourseDetails = () => {
 
                 </div>
 
+                {/* =================================================
+                    ENROLLMENT ACTION
+                ================================================= */}
+
+                <div className="course-enrollment-action">
+
+                  <button
+                    type="button"
+                    className="enroll-button"
+                    onClick={handleEnroll}
+                  >
+                    {enrolled ? (
+                      <>
+                        <CheckCircle2 size={18} />
+                        Continue to Subscription
+                      </>
+                    ) : (
+                      <>
+                        Enroll Now
+                        <ArrowRight size={18} />
+                      </>
+                    )}
+                  </button>
+
+                </div>
+
               </div>
 
-              {/* SUMMARY CARD */}
+              {/* SUMMARY */}
 
               <div className="course-summary-card">
 
@@ -853,33 +584,25 @@ const CourseDetails = () => {
                   </strong>
 
                   <small>
-                    Contact us for current pricing
-                    and learning arrangements.
+                    Contact us for current
+                    pricing and learning
+                    arrangements.
                   </small>
 
                 </div>
 
                 <Link
-                  to="/register"
-                  className="enroll-button"
-                >
-                  Get Started
-                  <ArrowRight size={18} />
-                </Link>
-
-                <Link
                   to="/contact"
                   className="contact-course"
                 >
-                  Contact us about this course
+                  Contact us about this
+                  course
                 </Link>
 
               </div>
 
             </div>
-
           </Container>
-
         </section>
 
         {/* ====================================================
@@ -887,7 +610,6 @@ const CourseDetails = () => {
         ==================================================== */}
 
         <section className="course-information">
-
           <Container>
 
             <div className="information-layout">
@@ -913,11 +635,14 @@ const CourseDetails = () => {
                 </p>
 
                 <p>
-                  This learning program is designed
-                  to provide structured knowledge,
-                  practical understanding and useful
-                  skills appropriate for learners at
-                  the {course.level.toLowerCase()} level.
+                  This learning program is
+                  designed to provide structured
+                  knowledge, practical
+                  understanding and useful
+                  skills appropriate for learners
+                  at the{" "}
+                  {course.level.toLowerCase()}{" "}
+                  level.
                 </p>
 
                 {/* OUTCOMES */}
@@ -953,9 +678,10 @@ const CourseDetails = () => {
                       </h4>
 
                       <p>
-                        Build a clear understanding
-                        of important concepts and
-                        principles.
+                        Build a clear
+                        understanding of
+                        important concepts
+                        and principles.
                       </p>
 
                     </div>
@@ -969,8 +695,9 @@ const CourseDetails = () => {
                       </h4>
 
                       <p>
-                        Connect what you learn with
-                        practical applications and
+                        Connect what you
+                        learn with practical
+                        applications and
                         real-world situations.
                       </p>
 
@@ -985,9 +712,11 @@ const CourseDetails = () => {
                       </h4>
 
                       <p>
-                        Develop confidence to apply
-                        your knowledge in education,
-                        work or personal development.
+                        Develop confidence
+                        to apply your
+                        knowledge in
+                        education, work or
+                        personal development.
                       </p>
 
                     </div>
@@ -1001,15 +730,15 @@ const CourseDetails = () => {
                       </h4>
 
                       <p>
-                        Learn progressively at a pace
-                        that works for your learning
+                        Learn progressively
+                        at a pace that works
+                        for your learning
                         needs.
                       </p>
 
                     </div>
 
                   </div>
-
                 </div>
 
                 {/* FEATURES */}
@@ -1039,42 +768,48 @@ const CourseDetails = () => {
                     <div>
                       <CheckCircle2 />
                       <span>
-                        Structured learning content
+                        Structured learning
+                        content
                       </span>
                     </div>
 
                     <div>
                       <CheckCircle2 />
                       <span>
-                        Flexible learning arrangements
+                        Flexible learning
+                        arrangements
                       </span>
                     </div>
 
                     <div>
                       <CheckCircle2 />
                       <span>
-                        Practical examples and applications
+                        Practical examples
+                        and applications
                       </span>
                     </div>
 
                     <div>
                       <CheckCircle2 />
                       <span>
-                        Support for different learning needs
+                        Support for different
+                        learning needs
                       </span>
                     </div>
 
                     <div>
                       <CheckCircle2 />
                       <span>
-                        Knowledge and skills development
+                        Knowledge and skills
+                        development
                       </span>
                     </div>
 
                     <div>
                       <CheckCircle2 />
                       <span>
-                        Learning focused on real outcomes
+                        Learning focused on
+                        real outcomes
                       </span>
                     </div>
 
@@ -1103,9 +838,9 @@ const CourseDetails = () => {
                   </h3>
 
                   <p>
-                    Register with Gracia Education
-                    Hub and begin your learning
-                    journey.
+                    Register with Gracia
+                    Education Hub and begin
+                    your learning journey.
                   </p>
 
                   <Link
@@ -1135,11 +870,8 @@ const CourseDetails = () => {
                     </strong>
 
                     <Link to="/contact">
-
                       Contact Support
-
                       <ArrowRight size={14} />
-
                     </Link>
 
                   </div>
@@ -1157,9 +889,9 @@ const CourseDetails = () => {
                     </strong>
 
                     <p>
-                      Learn skills that can make
-                      a meaningful difference in
-                      your future.
+                      Learn skills that can
+                      make a meaningful
+                      difference in your future.
                     </p>
 
                   </div>
@@ -1169,9 +901,7 @@ const CourseDetails = () => {
               </aside>
 
             </div>
-
           </Container>
-
         </section>
 
         {/* ====================================================
@@ -1179,7 +909,6 @@ const CourseDetails = () => {
         ==================================================== */}
 
         {relatedCourses.length > 0 && (
-
           <section className="related-courses">
 
             <Container>
@@ -1199,7 +928,9 @@ const CourseDetails = () => {
                 </div>
 
                 <Link
-                  to={`/courses?level=${course.level.toLowerCase()}`}
+                  to={`/courses?level=${encodeURIComponent(
+                    course.level.toLowerCase()
+                  )}`}
                 >
                   View All
                   <ArrowRight size={16} />
@@ -1209,63 +940,58 @@ const CourseDetails = () => {
 
               <div className="related-grid">
 
-                {relatedCourses.map((related) => (
+                {relatedCourses.map(
+                  (related) => (
+                    <article
+                      className="related-card"
+                      key={related.id}
+                    >
 
-                  <article
-                    className="related-card"
-                    key={related.id}
-                  >
+                      <div className="related-icon">
+                        {getCourseIcon(
+                          related.icon
+                        )}
+                      </div>
 
-                    <div className="related-icon">
+                      <span>
+                        {related.category}
+                      </span>
 
-                      {getCourseIcon(related.icon)}
+                      <h3>
+                        {related.title}
+                      </h3>
 
-                    </div>
+                      <p>
+                        {related.description}
+                      </p>
 
-                    <span>
-                      {related.category}
-                    </span>
+                      <div className="related-bottom">
 
-                    <h3>
-                      {related.title}
-                    </h3>
+                        <small>
+                          <BookOpen size={14} />
+                          {related.lessons}{" "}
+                          lessons
+                        </small>
 
-                    <p>
-                      {related.description}
-                    </p>
+                        <Link
+                          to={`/courses/${related.id}`}
+                        >
+                          Explore
+                          <ArrowRight
+                            size={15}
+                          />
+                        </Link>
 
-                    <div className="related-bottom">
+                      </div>
 
-                      <small>
-
-                        <BookOpen size={14} />
-
-                        {related.lessons} lessons
-
-                      </small>
-
-                      <Link
-                        to={`/courses/${related.id}`}
-                      >
-
-                        Explore
-
-                        <ArrowRight size={15} />
-
-                      </Link>
-
-                    </div>
-
-                  </article>
-
-                ))}
+                    </article>
+                  )
+                )}
 
               </div>
-
             </Container>
 
           </section>
-
         )}
 
         {/* ====================================================
@@ -1290,8 +1016,9 @@ const CourseDetails = () => {
 
                 <p>
                   Take the next step and begin
-                  building knowledge and practical
-                  skills for your future.
+                  building knowledge and
+                  practical skills for your
+                  future.
                 </p>
 
               </div>
@@ -1324,7 +1051,6 @@ const CourseDetails = () => {
       </main>
 
       <Footer />
-
     </div>
   );
 };

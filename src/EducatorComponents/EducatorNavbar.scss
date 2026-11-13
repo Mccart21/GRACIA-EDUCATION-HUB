@@ -1,0 +1,201 @@
+
+.educator-navbar {
+  position: relative;
+  z-index: 1000;
+  width: 100%;
+  background: #ffffff;
+  border-bottom: 1px solid #e8e8e8;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.educator-navbar__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px;
+  min-height: 78px;
+}
+
+/* Brand and logo */
+.educator-navbar__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  color: inherit;
+  text-decoration: none;
+}
+
+.educator-navbar__logo-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  overflow: hidden;
+  flex-shrink: 0;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.educator-navbar__logo-icon img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.educator-navbar__brand-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  line-height: 1.1;
+}
+
+.educator-navbar__brand-text span {
+  color: #1746a2;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.educator-navbar__brand-text small {
+  color: #555555;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.1px;
+}
+
+/* Desktop navigation */
+.educator-navbar__links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.educator-navbar__links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 0;
+  color: #333333;
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.2s ease;
+}
+
+.educator-navbar__links a:hover,
+.educator-navbar__links a.active {
+  color: #1746a2;
+}
+
+/* Logout button only */
+.educator-navbar__account {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.educator-navbar__logout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: #555555;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.educator-navbar__logout:hover {
+  background: #fff0f0;
+  color: #c62828;
+}
+
+/* Mobile menu button */
+.educator-navbar__toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: #1746a2;
+  cursor: pointer;
+}
+
+/* Smaller laptops and tablets */
+@media (max-width: 1100px) {
+  .educator-navbar__inner {
+    flex-wrap: wrap;
+    gap: 12px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
+  .educator-navbar__toggle {
+    display: inline-flex;
+    margin-left: auto;
+  }
+
+  .educator-navbar__links {
+    display: none;
+    width: 100%;
+    order: 3;
+    align-items: stretch;
+    flex-direction: column;
+    gap: 2px;
+    padding: 8px 0;
+    border-top: 1px solid #eeeeee;
+  }
+
+  .educator-navbar__links.is-open {
+    display: flex;
+  }
+
+  .educator-navbar__links a {
+    padding: 12px 10px;
+    border-radius: 6px;
+  }
+
+  .educator-navbar__links a:hover,
+  .educator-navbar__links a.active {
+    background: #f2f6ff;
+  }
+
+  .educator-navbar__account {
+    order: 2;
+  }
+}
+
+/* Small phones */
+@media (max-width: 480px) {
+  .educator-navbar__logo-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .educator-navbar__brand-text span {
+    font-size: 17px;
+  }
+
+  .educator-navbar__brand-text small {
+    font-size: 8px;
+  }
+
+  .educator-navbar__inner {
+    gap: 8px;
+  }
+}

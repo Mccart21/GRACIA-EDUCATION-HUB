@@ -14,7 +14,7 @@ import {
 
 import Container from "../common/Container";
 
-import logo from "../../assets/icons/zep.jpeg";
+import logo from "../../assets/icons/zep.jpg";
 
 import "./Footer.scss";
 
@@ -181,7 +181,7 @@ const Footer = () => {
               <Phone size={17} />
 
               <span>
-                +265 XXX XXX XXX
+                +265 886 266 400
               </span>
 
             </div>

@@ -1,13 +1,13 @@
-import {
-  FormEvent,
-  useEffect,
-  useState,
-} from "react";
+
+import { useEffect, useState } from "react";
+import type { FormEvent } from "react";
+
 import {
   Link,
   useLocation,
   useNavigate,
 } from "react-router-dom";
+
 import {
   ArrowRight,
   CheckCircle2,
@@ -18,9 +18,10 @@ import {
   Mail,
 } from "lucide-react";
 
-import zepLogo from "../../assets/icons/zep.jpeg";
+import zepLogo from "../../assets/icons/zep.jpg";
 
 import "./Login.scss";
+
 
 /* =========================================================
    API CONFIGURATION
@@ -29,6 +30,7 @@ import "./Login.scss";
 const API_BASE_URL =
   import.meta.env.VITE_API_URL ||
   "http://localhost:3000/api";
+
 
 /* =========================================================
    TYPES
@@ -39,6 +41,7 @@ interface AuthenticatedUser {
   username?: string;
   name?: string;
   email: string;
+  level?: string;
   role?: string;
   accountStatus?: string;
   emailVerified?: number | boolean;
@@ -51,7 +54,7 @@ interface LoginResponse {
 
   user?: AuthenticatedUser;
 
-  message?: string;
+  message?: string | string[];
 }
 
 interface LocationState {
@@ -59,6 +62,7 @@ interface LocationState {
   email?: string;
   message?: string;
 }
+
 
 /* =========================================================
    LOGIN COMPONENT
@@ -70,6 +74,7 @@ const Login = () => {
 
   const registrationState =
     location.state as LocationState | null;
+
 
   /* =========================================================
      FORM STATE
@@ -89,6 +94,7 @@ const Login = () => {
 
   const [isSubmitting, setIsSubmitting] =
     useState(false);
+
 
   /* =========================================================
      LOAD SAVED LOGIN INFORMATION
@@ -119,6 +125,7 @@ const Login = () => {
       );
     }
 
+
     /* =======================================================
        REGISTRATION SUCCESS MESSAGE
     ======================================================= */
@@ -133,11 +140,9 @@ const Login = () => {
       );
     }
 
+
     /* =======================================================
        CLEAR NAVIGATION STATE
-
-       Prevents the registration success message from
-       appearing again if the user refreshes the page.
     ======================================================= */
 
     if (location.state) {
@@ -154,6 +159,7 @@ const Login = () => {
     registrationState?.registered,
   ]);
 
+
   /* =========================================================
      LOGIN SUBMIT
   ========================================================= */
@@ -166,32 +172,19 @@ const Login = () => {
     setError("");
     setSuccess("");
 
+
     /* =======================================================
        REQUIRED FIELDS
     ======================================================= */
 
     if (!email.trim() || !password) {
       setError(
-        "Please enter your email and password."
+        "Please enter your email/username and password."
       );
 
       return;
     }
 
-    /* =======================================================
-       EMAIL VALIDATION
-    ======================================================= */
-
-    const emailPattern =
-      /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!emailPattern.test(email.trim())) {
-      setError(
-        "Please enter a valid email address."
-      );
-
-      return;
-    }
 
     /* =======================================================
        PASSWORD VALIDATION
@@ -205,6 +198,7 @@ const Login = () => {
       return;
     }
 
+
     /* =======================================================
        PREVENT DOUBLE SUBMISSION
     ======================================================= */
@@ -215,20 +209,20 @@ const Login = () => {
 
     setIsSubmitting(true);
 
+
     try {
       /* =====================================================
          BACKEND LOGIN
 
-         NestJS endpoint:
-
          POST /api/auth/login
 
-         Payload:
-         {
-           email,
-           password
-         }
+         The identifier can be either:
+         - email
+         - username
       ===================================================== */
+
+      const identifier =
+        email.trim();
 
       const response = await fetch(
         `${API_BASE_URL}/auth/login`,
@@ -240,13 +234,12 @@ const Login = () => {
           },
 
           body: JSON.stringify({
-            email: email
-              .trim()
-              .toLowerCase(),
+            identifier,
             password,
           }),
         }
       );
+
 
       /* =====================================================
          READ RESPONSE
@@ -260,6 +253,7 @@ const Login = () => {
       } catch {
         data = null;
       }
+
 
       /* =====================================================
          HANDLE BACKEND ERROR
@@ -280,14 +274,13 @@ const Login = () => {
 
         throw new Error(
           backendMessage ||
-            "Invalid email or password."
+            "Invalid username/email or password."
         );
       }
 
+
       /* =====================================================
          GET JWT TOKEN
-
-         Support the most common NestJS response names.
       ===================================================== */
 
       const token =
@@ -301,6 +294,7 @@ const Login = () => {
         );
       }
 
+
       /* =====================================================
          SAVE AUTH TOKEN
       ===================================================== */
@@ -309,6 +303,7 @@ const Login = () => {
         "token",
         token
       );
+
 
       /* =====================================================
          SAVE AUTHENTICATED USER
@@ -321,14 +316,9 @@ const Login = () => {
         );
       }
 
+
       /* =====================================================
          KEEP GRACIA STUDENT PROFILE
-
-         The registration process stores the learner's
-         selected level.
-
-         If an existing profile belongs to this email,
-         preserve it for Student dashboard personalization.
       ===================================================== */
 
       const storedStudent =
@@ -344,15 +334,8 @@ const Login = () => {
           if (
             parsedStudent?.email &&
             parsedStudent.email.toLowerCase() !==
-              email.trim().toLowerCase()
+              identifier.toLowerCase()
           ) {
-            /*
-             * The authenticated account is different from
-             * the locally stored registration profile.
-             *
-             * We do not overwrite it with another student's
-             * information.
-             */
             localStorage.removeItem(
               "gracia_student"
             );
@@ -363,6 +346,7 @@ const Login = () => {
           );
         }
       }
+
 
       /* =====================================================
          REMEMBER ME
@@ -376,9 +360,7 @@ const Login = () => {
 
         localStorage.setItem(
           "gracia_login_email",
-          email
-            .trim()
-            .toLowerCase()
+          identifier.toLowerCase()
         );
       } else {
         localStorage.removeItem(
@@ -390,19 +372,16 @@ const Login = () => {
         );
       }
 
-      /* =====================================================
-         SAVE LAST AUTHENTICATED EMAIL
 
-         Useful for restoring the correct student profile
-         and future authenticated requests.
+      /* =====================================================
+         SAVE LAST AUTHENTICATED IDENTIFIER
       ===================================================== */
 
       localStorage.setItem(
         "gracia_authenticated_email",
-        email
-          .trim()
-          .toLowerCase()
+        identifier.toLowerCase()
       );
+
 
       /* =====================================================
          REDIRECT TO STUDENT DASHBOARD
@@ -411,11 +390,13 @@ const Login = () => {
       navigate("/student", {
         replace: true,
       });
+
     } catch (loginError) {
       console.error(
         "Login error:",
         loginError
       );
+
 
       /* =====================================================
          NETWORK / SERVER CONNECTION ERROR
@@ -434,10 +415,12 @@ const Login = () => {
             : "Login failed. Please try again."
         );
       }
+
     } finally {
       setIsSubmitting(false);
     }
   };
+
 
   /* =========================================================
      RENDER
@@ -451,12 +434,10 @@ const Login = () => {
       ===================================================== */}
 
       <section className="gracia-login-visual">
-
         <div className="visual-decoration visual-decoration-one" />
-
         <div className="visual-decoration visual-decoration-two" />
-
       </section>
+
 
       {/* =====================================================
           LOGIN AREA
@@ -467,55 +448,26 @@ const Login = () => {
         <div className="login-container">
 
           {/* =================================================
-              BRAND
-          ================================================= */}
-
-          <div className="mobile-login-brand">
-
-            <Link
-              to="/"
-              className="gracia-login-logo"
-            >
-
-              {/* =================================================
-                  REAL GRACIA LOGO
-              ================================================= */}
-
-              <div className="logo-image-wrapper">
-
-                <img
-                  src={zepLogo}
-                  alt="Gracia Education Hub"
-                  className="gracia-logo-image"
-                />
-
-              </div>
-
-              {/* =================================================
-                  BRAND TEXT
-              ================================================= */}
-
-              <div className="gracia-logo-text">
-
-                <strong>
-                  GRACIA
-                </strong>
-
-                <span>
-                  EDUCATION HUB
-                </span>
-
-              </div>
-
-            </Link>
-
-          </div>
-
-          {/* =================================================
               LOGIN CARD
           ================================================= */}
 
           <div className="login-card">
+
+            {/* =================================================
+                LOGO INSIDE CARD
+            ================================================= */}
+
+            <Link
+              to="/"
+              className="login-card-logo"
+              aria-label="Go to home"
+            >
+              <img
+                src={zepLogo}
+                alt="Gracia"
+              />
+            </Link>
+
 
             {/* =================================================
                 LOGIN HEADER
@@ -523,12 +475,8 @@ const Login = () => {
 
             <div className="login-header">
 
-              <span className="login-eyebrow">
-                ACCOUNT LOGIN
-              </span>
-
               <h2>
-                Welcome back
+                Student Portal
               </h2>
 
               <p>
@@ -536,6 +484,7 @@ const Login = () => {
               </p>
 
             </div>
+
 
             {/* =================================================
                 SUCCESS MESSAGE
@@ -546,15 +495,14 @@ const Login = () => {
                 className="login-success"
                 role="status"
               >
-
                 <CheckCircle2 size={17} />
 
                 <span>
                   {success}
                 </span>
-
               </div>
             )}
+
 
             {/* =================================================
                 ERROR MESSAGE
@@ -569,6 +517,7 @@ const Login = () => {
               </div>
             )}
 
+
             {/* =================================================
                 LOGIN FORM
             ================================================= */}
@@ -580,40 +529,39 @@ const Login = () => {
             >
 
               {/* =================================================
-                  EMAIL
+                  EMAIL / USERNAME
               ================================================= */}
 
               <div className="login-field">
 
                 <label htmlFor="email">
-                  Email address
+                  Email or username
                 </label>
 
                 <div className="login-input">
 
                   <div className="input-icon">
-
                     <Mail size={18} />
-
                   </div>
 
                   <input
                     id="email"
-                    type="email"
-                    placeholder="you@example.com"
+                    type="text"
+                    placeholder="Enter your email or username"
                     value={email}
                     onChange={(event) =>
                       setEmail(
                         event.target.value
                       )
                     }
-                    autoComplete="email"
+                    autoComplete="username"
                     disabled={isSubmitting}
                   />
 
                 </div>
 
               </div>
+
 
               {/* =================================================
                   PASSWORD
@@ -643,9 +591,7 @@ const Login = () => {
                 <div className="login-input">
 
                   <div className="input-icon">
-
                     <Lock size={18} />
-
                   </div>
 
                   <input
@@ -681,18 +627,17 @@ const Login = () => {
                     }
                     disabled={isSubmitting}
                   >
-
                     {showPassword ? (
                       <EyeOff size={18} />
                     ) : (
                       <Eye size={18} />
                     )}
-
                   </button>
 
                 </div>
 
               </div>
+
 
               {/* =================================================
                   REMEMBER ME
@@ -712,9 +657,7 @@ const Login = () => {
                 />
 
                 <span className="custom-checkbox">
-
                   <CheckCircle2 size={12} />
-
                 </span>
 
                 <span>
@@ -722,6 +665,7 @@ const Login = () => {
                 </span>
 
               </label>
+
 
               {/* =================================================
                   SUBMIT BUTTON
@@ -758,6 +702,7 @@ const Login = () => {
 
             </form>
 
+
             {/* =================================================
                 CREATE ACCOUNT
             ================================================= */}
@@ -776,16 +721,13 @@ const Login = () => {
 
           </div>
 
+
           {/* =================================================
               COPYRIGHT
           ================================================= */}
 
           <p className="login-copyright">
-
-            © {new Date().getFullYear()}
-            {" "}
-            Gracia Education Hub
-
+            © {new Date().getFullYear()} Gracia Education Hub
           </p>
 
         </div>
